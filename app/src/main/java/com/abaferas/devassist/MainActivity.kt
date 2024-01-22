@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.abaferas.devassist.ui.navigation.AppNavigationApp
 import com.abaferas.devassist.ui.theme.DevAssistTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +18,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DevAssistTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                    AppNavigationApp()
                 }
             }
         }
