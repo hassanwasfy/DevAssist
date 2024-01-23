@@ -22,7 +22,15 @@ class ScreenHomeViewModel @Inject constructor(
     }
 
     override fun onClickBack() {
+        sendUiEffect(HomeScreenUiEffect.NavigateUp)
+    }
 
+    override fun onClickAddNewItem() {
+        sendUiEffect(HomeScreenUiEffect.AddNewItem)
+    }
+
+    override fun onClickEditItem(itemId: Int) {
+        sendUiEffect(HomeScreenUiEffect.EditCurrentItem(itemId = itemId))
     }
 }
 

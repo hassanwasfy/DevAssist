@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -57,6 +61,15 @@ fun ScreenHomeContent(
 ) {
     DevScaffold(
         isLoading = false, isError = false,
+        floating = {
+                   FloatingActionButton(
+                       onClick = { /*TODO*/ },
+                       containerColor = color_AccentColor,
+                       contentColor = color_textColor
+                   ) {
+                       Icon(imageVector = Icons.Outlined.Add, contentDescription ="")
+                   }
+        },
         topBar = {
             TopAppBar(
                 title = { Text(text = "Home") },
@@ -79,8 +92,7 @@ fun ScreenHomeContent(
             ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { //TODO
-                    }
+                    onClick = { /*TODO*/ }
                 ) {
                     DevLabel(
                         text = it.name,

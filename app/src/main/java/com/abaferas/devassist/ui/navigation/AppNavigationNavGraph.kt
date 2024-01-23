@@ -5,6 +5,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import com.abaferas.devassist.ui.screen.home.addHomeRoute
+import com.abaferas.devassist.ui.screen.item.addEditItemRoute
+import com.abaferas.devassist.ui.screen.item.addNewItemRoute
 
 
 @Composable
@@ -18,5 +20,7 @@ fun AppNavigationNavGraph() {
         popExitTransition = { fadeOut() }
     ) {
         addHomeRoute()
+        addNewItemRoute()
+        addEditItemRoute()
     }
 }
