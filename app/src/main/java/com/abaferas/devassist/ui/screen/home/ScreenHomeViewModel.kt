@@ -18,10 +18,11 @@ class ScreenHomeViewModel @Inject constructor(
     }
 
     override fun getData() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickBack() {
-        TODO("Not yet implemented")
+
     }
 }
+
