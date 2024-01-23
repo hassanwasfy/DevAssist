@@ -2,6 +2,7 @@ package com.abaferas.devassist.data
 
 data class LearningItem(
     val id: Int,
+    val userId: Int,
     val name: String,
     val type: LearningType,
     val author: String,
@@ -22,6 +23,7 @@ data class LearningItem(
 val homeList = listOf(
     LearningItem(
         id = 1,
+        userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
         author = "Jhon",
@@ -35,6 +37,7 @@ val homeList = listOf(
     ),
     LearningItem(
         id = 2,
+        userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
         author = "Jhon",
@@ -48,6 +51,7 @@ val homeList = listOf(
     ),
     LearningItem(
         id = 3,
+        userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
         author = "Jhon",
@@ -61,6 +65,7 @@ val homeList = listOf(
     ),
     LearningItem(
         id = 4,
+        userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
         author = "Jhon",
