@@ -6,22 +6,36 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.abaferas.devassist.R
+import com.abaferas.devassist.ui.theme.color_primaryColor
+import com.abaferas.devassist.ui.theme.color_textColor
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DevScaffold(
     modifier: Modifier = Modifier,
-    isLoading: Boolean,
-    isError: Boolean,
+    isLoading: Boolean = true,
+    isError: Boolean = false,
+    isRetrying: Boolean = false,
+    isInternetConnected: Boolean = true,
+    onRetry: () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floating: @Composable () -> Unit = {},
@@ -69,6 +83,29 @@ fun DevScaffold(
             )
         ) {
             content()
+        }
+        AnimatedVisibility(visible = !isInternetConnected) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.no_internet_connection),
+                    contentDescription = ""
+                )
+                Button(
+                    onClick = onRetry,
+                    enabled = !isRetrying,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = color_textColor,
+                        containerColor = color_primaryColor
+                    )
+                ) {
+                    DevLabel(text = "Try Again", color = color_textColor)
+                }
+            }
         }
     }
 }

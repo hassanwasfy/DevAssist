@@ -91,20 +91,26 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
     implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
-    implementation ("com.firebaseui:firebase-ui-auth")
-    implementation ("com.google.firebase:firebase-auth")
-    implementation ("com.firebaseui:firebase-ui-storage")
-    implementation ("com.firebaseui:firebase-ui-database")
-    implementation ("com.firebaseui:firebase-ui-firestore")
-    implementation ("com.google.firebase:firebase-analytics")
-    implementation ("com.google.firebase:firebase-crashlytics")
+    implementation ("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.6.1")
+    implementation("com.google.firebase:firebase-installations-ktx:17.2.0")
+    implementation("com.google.firebase:firebase-config-ktx:21.6.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.4.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.0")
+    implementation("com.google.firebase:firebase-dynamic-links-ktx:21.2.0")
 
 
 
     implementation ("com.airbnb.android:lottie-compose:6.2.0")
+
+    implementation ("androidx.compose.material:material-icons-core-android:1.5.4")
+    implementation ("androidx.compose.material:material-icons-extended-android:1.5.4")
 
 
     val roomVersion = "2.6.1"

@@ -9,6 +9,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 val LocalNavController =
@@ -20,6 +22,7 @@ fun AppNavigationApp() {
     val navController = rememberNavController()
     CompositionLocalProvider(LocalNavController provides navController) {
         Scaffold {
+            rememberSystemUiController().setStatusBarColor(color_darkPrimaryColor)
             AppNavigationNavGraph()
         }
     }

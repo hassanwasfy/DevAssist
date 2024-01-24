@@ -9,6 +9,8 @@ data class SignUpUiState(
     val isLoading: Boolean = true,
     val error: ErrorUiState = ErrorUiState(),
     val isInternetConnected: Boolean = true,
+    val isRetrying: Boolean = false,
+    val isPasswordVisible: Boolean = false,
     val userNameValue: EntryTextValue = EntryTextValue(),
     val userEmailValue: EntryTextValue = EntryTextValue(),
     val passwordValue: EntryTextValue = EntryTextValue(),
