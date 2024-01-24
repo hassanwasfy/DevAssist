@@ -14,7 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.abaferas.devassist.ui.composable.modifier.roundCornerShape
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 
@@ -27,6 +30,7 @@ fun DevTextField(
     placeholder: String,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onTogglePassword: () -> Unit = {},
     keyboardType:KeyboardType = KeyboardType.Text,
     colors: TextFieldColors = TextFieldDefaults.colors(
@@ -68,8 +72,9 @@ fun DevTextField(
             )
         },
         isError = isError,
-        shape = RoundedCornerShape(CornerSize(16.dp)),
+        shape = roundCornerShape(corner = 16),
         colors = colors,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = visualTransformation
     )
 }

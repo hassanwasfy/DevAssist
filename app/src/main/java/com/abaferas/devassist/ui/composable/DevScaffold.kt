@@ -7,11 +7,9 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,9 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.theme.color_primaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
@@ -39,7 +35,7 @@ fun DevScaffold(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floating: @Composable () -> Unit = {},
-    loading: @Composable () -> Unit = {},
+    loading: @Composable () -> Unit = { DevLoading() },
     error: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
@@ -109,3 +105,4 @@ fun DevScaffold(
         }
     }
 }
+

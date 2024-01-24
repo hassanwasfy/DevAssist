@@ -7,6 +7,7 @@ interface SignUpScreenInteraction {
     fun onPasswordValueChange(value: String)
     fun onPasswordConfirmationValueChange(value: String)
     fun onClickSignUp()
+    fun onClickSignInAnonymously()
     fun onClickLogin()
     fun onRetry()
     fun onTogglePassword()

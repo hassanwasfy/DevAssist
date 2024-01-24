@@ -21,6 +21,7 @@ fun DevLabel(
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = color_textSecondaryColor,
     textAlign: TextAlign = TextAlign.Start,
+    onCLick: () -> Unit = {}
 ) {
     Text(
         text = text,

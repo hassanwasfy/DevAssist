@@ -2,6 +2,7 @@ package com.abaferas.devassist.data.repository
 
 import com.abaferas.devassist.data.model.LearningItem
 import com.abaferas.devassist.data.model.User
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -19,23 +20,23 @@ class RepositoryImpl @Inject constructor(
     override suspend fun creteUserWithEmailAndPassword(
         email: String,
         password: String
-    ): AuthResult? {
+    ): Task<AuthResult?> {
         return try {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
         } catch (e: FirebaseFirestoreException) {
             throw e
         }
     }
 
-    override suspend fun signInAnonymous(): AuthResult? {
-        return wrapRequest { firebaseAuth.signInAnonymously().await() }
+    override suspend fun signInAnonymous(): Task<AuthResult?> {
+        return wrapRequest { firebaseAuth.signInAnonymously() }
     }
 
-    override suspend fun logInWithEmailAndPassword(email: String, password: String): AuthResult? {
-        return wrapRequest { firebaseAuth.signInWithEmailAndPassword(email, password).await() }
+    override suspend fun logInWithEmailAndPassword(email: String, password: String): Task<AuthResult?> {
+        return wrapRequest { firebaseAuth.signInWithEmailAndPassword(email, password) }
     }
 
-    override suspend fun insertNewUser(user: User) {
+    override suspend fun insertNewUser(user: User): Task<DocumentReference?> {
         return wrapRequest { firestore.collection(collectionUSERS).add(user) }
     }
 

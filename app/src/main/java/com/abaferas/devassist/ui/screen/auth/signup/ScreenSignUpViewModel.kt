@@ -2,11 +2,15 @@ package com.abaferas.devassist.ui.screen.auth.signup
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.abaferas.devassist.data.model.User
 import com.abaferas.devassist.data.repository.IRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
 import com.abaferas.devassist.ui.utils.NetworkStateManager
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.firestore.DocumentReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -42,18 +46,6 @@ class ScreenSignUpViewModel @Inject constructor(
                     isRetrying = false
                 )
             }
-        }
-    }
-
-    private fun onSuccess() {
-
-    }
-
-    private fun onError(errMsg: String) {
-        iState.update {
-            it.copy(
-                error = ErrorUiState(isError = true, message = errMsg)
-            )
         }
     }
 
@@ -150,11 +142,140 @@ class ScreenSignUpViewModel @Inject constructor(
     }
 
     override fun onClickSignUp() {
+        if (
+            state.value.userNameValue.value.isEmpty() || state.value.userNameValue.error.isError
+        ) {
+            iState.update {
+                it.copy(
+                    userNameValue = EntryTextValue(
+                        value = it.userNameValue.value,
+                        error = ErrorUiState(true, "inValid Name!")
+                    )
+                )
+            }
+        } else if (
+            state.value.userEmailValue.value.isEmpty() || state.value.userEmailValue.error.isError
+        ) {
+            iState.update {
+                it.copy(
+                    userEmailValue = EntryTextValue(
+                        value = it.userEmailValue.value,
+                        error = ErrorUiState(true, "empty or inValid Email!")
+                    )
+                )
+            }
+        } else if (
+            state.value.passwordValue.value.isEmpty() || state.value.passwordValue.error.isError
+        ) {
+            iState.update {
+                it.copy(
+                    passwordValue = EntryTextValue(
+                        value = it.passwordValue.value,
+                        error = ErrorUiState(true, "empty or inValid Password!")
+                    )
+                )
+            }
+        } else if (
+            state.value.passwordConfirmation.value.isEmpty() || state.value.passwordConfirmation.error.isError
+        ) {
+            iState.update {
+                it.copy(
+                    passwordConfirmation = EntryTextValue(
+                        value = it.passwordConfirmation.value,
+                        error = ErrorUiState(true, "empty or doesn't match Password!")
+                    )
+                )
+            }
+        } else {
+            iState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+            tryToExecute(
+                onSuccess = ::onSuccess,
+                onError = ::onError
+            ) {
+                repository.creteUserWithEmailAndPassword(
+                    email = state.value.userEmailValue.value,
+                    password = state.value.passwordValue.value,
+                )
+            }
+        }
+
 
     }
 
-    override fun onClickLogin() {
+    private fun onSuccess(result: Task<AuthResult?>) {
+        result.addOnSuccessListener { auth ->
+            tryToExecute(
+                onSuccess = ::onSaveUserSuccess,
+                onError = ::onSaveUserError
+            ) {
+                repository.insertNewUser(
+                    User(
+                        id = auth?.user?.uid ?: "",
+                        name = iState.value.userNameValue.value,
+                        email = iState.value.userEmailValue.value
+                    )
+                )
+            }
+            sendUiEffect(SignUpScreenUiEffect.NavigateToHome)
+        }.addOnFailureListener { e ->
+            iState.update {
+                it.copy(
+                    error = ErrorUiState(true,e.message.toString())
+                )
+            }
+        }
+    }
 
+    private fun onSaveUserSuccess(result: Task<DocumentReference?>){
+        result.addOnSuccessListener {
+            sendUiEffect(SignUpScreenUiEffect.NavigateUp)
+        }
+    }
+    private fun onSaveUserError(errMsg: String){
+        iState.update {
+            it.copy(
+                error = ErrorUiState(isError = true, message = errMsg)
+            )
+        }
+    }
+
+    private fun onError(errMsg: String) {
+        iState.update {
+            it.copy(
+                isLoading = false,
+                error = ErrorUiState(isError = true, message = errMsg)
+            )
+        }
+    }
+
+    override fun onClickSignInAnonymously() {
+        if (
+            state.value.userNameValue.value.isEmpty() || state.value.userNameValue.error.isError
+        ) {
+            iState.update {
+                it.copy(
+                    userNameValue = EntryTextValue(
+                        value = it.userNameValue.value,
+                        error = ErrorUiState(true, "inValid Name!")
+                    )
+                )
+            }
+        }else {
+            tryToExecute(
+                onSuccess = ::onSuccess,
+                onError = ::onError
+            ) {
+                repository.signInAnonymous()
+            }
+        }
+    }
+
+    override fun onClickLogin() {
+        sendUiEffect(SignUpScreenUiEffect.NavigateToLogin)
     }
 
     override fun onRetry() {
