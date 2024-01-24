@@ -50,7 +50,7 @@ class ScreenSignUpViewModel @Inject constructor(
     }
 
     override fun onClickBack() {
-
+        sendUiEffect(SignUpScreenUiEffect.NavigateUp)
     }
 
     override fun onUserNameValueChange(value: String) {
@@ -202,8 +202,6 @@ class ScreenSignUpViewModel @Inject constructor(
                 )
             }
         }
-
-
     }
 
     private fun onSuccess(result: Task<AuthResult?>) {

@@ -1,5 +1,6 @@
 package com.abaferas.devassist.ui.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -21,7 +22,6 @@ fun DevLabel(
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = color_textSecondaryColor,
     textAlign: TextAlign = TextAlign.Start,
-    onCLick: () -> Unit = {}
 ) {
     Text(
         text = text,
@@ -30,6 +30,28 @@ fun DevLabel(
         fontWeight = fontWeight,
         color = color,
         modifier = modifier,
+        textAlign = textAlign,
+    )
+}
+
+@Composable
+fun DevLabelClick(
+    modifier: Modifier = Modifier,
+    text: String,
+    fontSize: Int = 14,
+    fontFamily: FontFamily = Tajawal,
+    fontWeight: FontWeight = FontWeight.Bold,
+    color: Color = color_textSecondaryColor,
+    textAlign: TextAlign = TextAlign.Start,
+    onCLick: () -> Unit = {}
+) {
+    Text(
+        text = text,
+        fontSize = fontSize.sp,
+        fontFamily = fontFamily,
+        fontWeight = fontWeight,
+        color = color,
+        modifier = modifier.clickable { onCLick() },
         textAlign = textAlign,
     )
 }

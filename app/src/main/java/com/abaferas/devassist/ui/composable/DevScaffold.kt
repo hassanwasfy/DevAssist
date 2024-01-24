@@ -29,6 +29,7 @@ fun DevScaffold(
     modifier: Modifier = Modifier,
     isLoading: Boolean = true,
     isError: Boolean = false,
+    errorMsg: String = "",
     isRetrying: Boolean = false,
     isInternetConnected: Boolean = true,
     onRetry: () -> Unit = {},
@@ -36,7 +37,13 @@ fun DevScaffold(
     bottomBar: @Composable () -> Unit = {},
     floating: @Composable () -> Unit = {},
     loading: @Composable () -> Unit = { DevLoading() },
-    error: @Composable () -> Unit = {},
+    error: @Composable () -> Unit = {
+        DevError(
+            errorMsg = errorMsg,
+            onRetry = onRetry,
+            isRetrying = isRetrying
+        )
+    },
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
@@ -105,4 +112,3 @@ fun DevScaffold(
         }
     }
 }
-

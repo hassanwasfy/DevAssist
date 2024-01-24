@@ -13,8 +13,7 @@ fun DevLoading(){
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_lottie))
     val progress by animateLottieCompositionAsState(
         composition = composition,
-        restartOnPlay = false,
-        iterations = 100
+        iterations = Int.MAX_VALUE
     )
     LottieAnimation(
         composition = composition,

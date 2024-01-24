@@ -1,5 +1,9 @@
 package com.abaferas.devassist.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
@@ -16,10 +20,22 @@ fun AppNavigationNavGraph() {
     NavHost(
         navController = LocalNavController.current,
         startDestination = NavigationDestination.ScreenSignUp.route,
-        enterTransition = { fadeIn() },
-        exitTransition = { fadeOut() },
-        popEnterTransition = { fadeIn() },
-        popExitTransition = { fadeOut() }
+        enterTransition = {
+            fadeIn(
+                animationSpec = tween(300),
+                ) + slideIntoContainer(
+                animationSpec = tween(300, delayMillis = 200, easing = EaseIn),
+                towards = SlideDirection.Start
+            )
+        },
+        exitTransition = {
+            fadeOut(
+                animationSpec = tween(300),
+            ) + slideOutOfContainer(
+                animationSpec = tween(300, easing = EaseOut),
+                towards = SlideDirection.End
+            )
+        },
     ) {
         addSignUpRoute()
         addLoginRoute()
