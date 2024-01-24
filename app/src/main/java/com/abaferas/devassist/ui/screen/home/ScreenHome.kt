@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -20,18 +19,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.abaferas.devassist.data.homeList
+import com.abaferas.devassist.data.model.homeList
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.navigation.NavigationHandler
+import com.abaferas.devassist.ui.screen.item.navigateToEditItem
+import com.abaferas.devassist.ui.screen.item.navigateToNewItem
 import com.abaferas.devassist.ui.theme.Tajawal
 import com.abaferas.devassist.ui.theme.color_AccentColor
-import com.abaferas.devassist.ui.theme.color_dividerColor
 import com.abaferas.devassist.ui.theme.color_primaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
 import com.abaferas.devassist.ui.theme.color_textPrimaryColor
@@ -49,6 +47,13 @@ fun ScreenHome(
             is HomeScreenUiEffect.NavigateUp -> {
                 controller.popBackStack()
             }
+
+            is HomeScreenUiEffect.AddNewItem -> {
+                controller.navigateToNewItem()
+            }
+            is HomeScreenUiEffect.EditCurrentItem -> {
+                controller.navigateToEditItem(effect.itemId)
+            }
         }
     }
 }
@@ -63,7 +68,7 @@ fun ScreenHomeContent(
         isLoading = false, isError = false,
         floating = {
                    FloatingActionButton(
-                       onClick = { /*TODO*/ },
+                       onClick = interaction::onClickAddNewItem,
                        containerColor = color_AccentColor,
                        contentColor = color_textColor
                    ) {
@@ -92,7 +97,7 @@ fun ScreenHomeContent(
             ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { /*TODO*/ }
+                    onClick = { interaction.onClickEditItem(it.id)}
                 ) {
                     DevLabel(
                         text = it.name,

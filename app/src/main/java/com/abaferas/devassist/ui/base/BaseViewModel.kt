@@ -20,10 +20,10 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState) : 
 
     protected abstract fun getData()
     fun <T> tryToExecute(
-        execute: suspend () -> T,
         onSuccess: (T) -> Unit = {},
         onError: (errorMsg: String) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
+        dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        execute: suspend () -> T,
     ) {
         viewModelScope.launch(dispatcher) {
             try {

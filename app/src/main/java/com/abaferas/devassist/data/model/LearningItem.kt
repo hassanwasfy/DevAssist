@@ -1,7 +1,7 @@
-package com.abaferas.devassist.data
+package com.abaferas.devassist.data.model
 
 data class LearningItem(
-    val id: Int,
+    val id: String,
     val userId: Int,
     val name: String,
     val type: LearningType,
@@ -22,7 +22,7 @@ data class LearningItem(
 
 val homeList = listOf(
     LearningItem(
-        id = 1,
+        id = "1",
         userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
@@ -36,7 +36,7 @@ val homeList = listOf(
         progress = 50f
     ),
     LearningItem(
-        id = 2,
+        id = "2",
         userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
@@ -50,7 +50,7 @@ val homeList = listOf(
         progress = 50f
     ),
     LearningItem(
-        id = 3,
+        id = "3",
         userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
@@ -64,7 +64,7 @@ val homeList = listOf(
         progress = 50f
     ),
     LearningItem(
-        id = 4,
+        id = "4",
         userId = 1,
         name = "Atomic",
         type = LearningItem.LearningType.BOOK,
