@@ -97,7 +97,7 @@ fun ScreenHomeContent(
             ) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { interaction.onClickEditItem(it.id)}
+                    onClick = { interaction.onClickEditItem(it.id.toInt())}
                 ) {
                     DevLabel(
                         text = it.name,
