@@ -24,4 +24,8 @@ class ScreenViewItemViewModel @Inject constructor(
     override fun onClickBack() {
 
     }
+
+    override fun onError(errorMsg: String) {
+
+    }
 }

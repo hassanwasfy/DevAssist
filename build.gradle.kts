@@ -33,3 +33,7 @@ plugins {
     id("com.google.firebase.crashlytics") version "2.9.9" apply false
     kotlin("kapt") version "1.9.0"
 }
+
+tasks.register("clean",Delete::class){
+    delete(rootProject.buildDir)
+}

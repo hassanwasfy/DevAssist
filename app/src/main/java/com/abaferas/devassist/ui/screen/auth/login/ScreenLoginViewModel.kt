@@ -153,6 +153,15 @@ class ScreenLoginViewModel @Inject constructor(
         }
     }
 
+    override fun onError(errorMsg: String) {
+        iState.update {
+            it.copy(
+                isLoading = false,
+                error = ErrorUiState(isError = true, message = errorMsg)
+            )
+        }
+    }
+
     private fun onSuccess(result: Task<AuthResult?>) {
         result.addOnSuccessListener { _ ->
             sendUiEffect(LoginScreenUiEffect.Login)
@@ -162,15 +171,6 @@ class ScreenLoginViewModel @Inject constructor(
                     error = ErrorUiState(true, e.message.toString())
                 )
             }
-        }
-    }
-
-    private fun onError(errMsg: String) {
-        iState.update {
-            it.copy(
-                isLoading = false,
-                error = ErrorUiState(isError = true, message = errMsg)
-            )
         }
     }
 }

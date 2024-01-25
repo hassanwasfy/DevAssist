@@ -242,11 +242,11 @@ class ScreenSignUpViewModel @Inject constructor(
         }
     }
 
-    private fun onError(errMsg: String) {
+    override fun onError(errorMsg: String) {
         iState.update {
             it.copy(
                 isLoading = false,
-                error = ErrorUiState(isError = true, message = errMsg)
+                error = ErrorUiState(isError = true, message = errorMsg)
             )
         }
     }

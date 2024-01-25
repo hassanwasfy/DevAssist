@@ -19,9 +19,11 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState) : 
     val effect = iEffect.asSharedFlow()
 
     protected abstract fun getData()
+    protected abstract fun onError(errorMsg: String)
+
     fun <T> tryToExecute(
         onSuccess: (T) -> Unit = {},
-        onError: (errorMsg: String) -> Unit,
+        onError: (errorMsg: String) -> Unit = ::onError,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         execute: suspend () -> T,
     ) {

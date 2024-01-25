@@ -32,5 +32,9 @@ class ScreenHomeViewModel @Inject constructor(
     override fun onClickEditItem(itemId: Int) {
         sendUiEffect(HomeScreenUiEffect.EditCurrentItem(itemId = itemId))
     }
+
+    override fun onError(errorMsg: String) {
+
+    }
 }
 

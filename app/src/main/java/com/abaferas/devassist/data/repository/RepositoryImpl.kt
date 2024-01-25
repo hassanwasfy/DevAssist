@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -37,6 +38,10 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun logInWithEmailAndPassword(email: String, password: String): Task<AuthResult?> {
         return wrapRequest { firebaseAuth.signInWithEmailAndPassword(email, password) }
+    }
+
+    override suspend fun isUserLoggedIn(): FirebaseUser? {
+        return wrapRequest { firebaseAuth.currentUser }
     }
 
     override suspend fun insertNewUser(user: User): Task<DocumentReference?> {
