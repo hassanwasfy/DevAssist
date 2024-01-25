@@ -35,6 +35,7 @@ import com.abaferas.devassist.ui.composable.DevButton
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTextField
+import com.abaferas.devassist.ui.navigation.NavigationDestination
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.screen.home.navigateToHome
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
@@ -55,8 +56,13 @@ fun ScreenLogin(
             is LoginScreenUiEffect.NavigateUp -> {
                 controller.popBackStack()
             }
+
             is LoginScreenUiEffect.Login -> {
-                controller.navigateToHome()
+                controller.navigateToHome(){
+                    popUpTo(controller.graph.id){
+                        inclusive = true
+                    }
+                }
             }
         }
     }
@@ -71,8 +77,8 @@ fun ScreenLoginContent(
     DevScaffold(
         isLoading = state.isLoading,
         isError = state.error.isError,
+        errorMsg = state.error.message,
         isInternetConnected = state.isInternetConnected,
-        isRetrying = state.isRetrying,
         onRetry = interaction::onRetry,
         topBar = {
             TopAppBar(

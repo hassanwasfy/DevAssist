@@ -9,7 +9,6 @@ data class LoginUiState(
     val isLoading: Boolean = true,
     val error: ErrorUiState = ErrorUiState(),
     val isInternetConnected: Boolean = true,
-    val isRetrying: Boolean = true,
     val isPasswordVisible: Boolean = false,
     val userEmailValue: EntryTextValue = EntryTextValue(),
     val passwordValue: EntryTextValue = EntryTextValue(),

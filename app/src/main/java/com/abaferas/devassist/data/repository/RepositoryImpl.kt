@@ -3,8 +3,13 @@ package com.abaferas.devassist.data.repository
 import com.abaferas.devassist.data.model.LearningItem
 import com.abaferas.devassist.data.model.User
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthEmailException
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -21,10 +26,8 @@ class RepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Task<AuthResult?> {
-        return try {
+        return wrapRequest {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
-        } catch (e: FirebaseFirestoreException) {
-            throw e
         }
     }
 
@@ -78,6 +81,18 @@ class RepositoryImpl @Inject constructor(
         return try {
             response()
         } catch (e: FirebaseFirestoreException) {
+            throw e
+        } catch (e: Exception){
+            throw e
+        }catch (e: FirebaseAuthException){
+            throw e
+        }catch (e: FirebaseNetworkException){
+            throw e
+        }catch (e: FirebaseAuthInvalidCredentialsException){
+            throw e
+        }catch (e: FirebaseAuthEmailException){
+            throw e
+        }catch (e: FirebaseException){
             throw e
         }
     }

@@ -30,7 +30,6 @@ fun DevScaffold(
     isLoading: Boolean = true,
     isError: Boolean = false,
     errorMsg: String = "",
-    isRetrying: Boolean = false,
     isInternetConnected: Boolean = true,
     onRetry: () -> Unit = {},
     topBar: @Composable () -> Unit = {},
@@ -41,7 +40,6 @@ fun DevScaffold(
         DevError(
             errorMsg = errorMsg,
             onRetry = onRetry,
-            isRetrying = isRetrying
         )
     },
     content: @Composable () -> Unit = {}
@@ -100,7 +98,6 @@ fun DevScaffold(
                 )
                 Button(
                     onClick = onRetry,
-                    enabled = !isRetrying,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = color_textColor,
                         containerColor = color_primaryColor

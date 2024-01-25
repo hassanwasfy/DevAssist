@@ -56,7 +56,11 @@ fun ScreenSignUp(
             }
 
             is SignUpScreenUiEffect.NavigateToHome -> {
-                controller.navigateToHome()
+                controller.navigateToHome(){
+                    popUpTo(controller.graph.id){
+                        inclusive = true
+                    }
+                }
             }
             is SignUpScreenUiEffect.NavigateToLogin -> {
                 controller.navigateToLogin()
@@ -74,8 +78,8 @@ fun ScreenSignUpContent(
     DevScaffold(
         isLoading = state.isLoading,
         isError = state.error.isError,
+        errorMsg = state.error.message,
         isInternetConnected = state.isInternetConnected,
-        isRetrying = state.isRetrying,
         onRetry = interaction::onRetry,
         topBar = {
             TopAppBar(

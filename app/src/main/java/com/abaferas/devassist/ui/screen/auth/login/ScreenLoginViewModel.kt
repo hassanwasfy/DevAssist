@@ -5,6 +5,7 @@ import com.abaferas.devassist.data.repository.IRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
+import com.abaferas.devassist.ui.screen.auth.signup.SignUpUiState
 import com.abaferas.devassist.ui.utils.NetworkStateManager
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -17,7 +18,7 @@ class ScreenLoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
     private val repository: IRepository
-): BaseViewModel<LoginUiState, LoginScreenUiEffect>(LoginUiState()), LoginScreenInteraction {
+) : BaseViewModel<LoginUiState, LoginScreenUiEffect>(LoginUiState()), LoginScreenInteraction {
 
     private val args: LoginScreenArgs = LoginScreenArgs(savedStateHandle = savedStateHandle)
 
@@ -31,7 +32,6 @@ class ScreenLoginViewModel @Inject constructor(
                 it.copy(
                     isInternetConnected = true,
                     isLoading = false,
-                    isRetrying = false
                 )
             }
         } else {
@@ -39,7 +39,6 @@ class ScreenLoginViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     isInternetConnected = false,
-                    isRetrying = false
                 )
             }
         }
@@ -126,7 +125,7 @@ class ScreenLoginViewModel @Inject constructor(
                 onSuccess = ::onSuccess,
                 onError = ::onError
             ) {
-                repository.creteUserWithEmailAndPassword(
+                repository.logInWithEmailAndPassword(
                     email = state.value.userEmailValue.value,
                     password = state.value.passwordValue.value,
                 )
@@ -137,7 +136,10 @@ class ScreenLoginViewModel @Inject constructor(
     override fun onRetry() {
         iState.update {
             it.copy(
-                isRetrying = true
+                isLoading = true,
+                isInternetConnected = true,
+                isPasswordVisible = false,
+                error = ErrorUiState()
             )
         }
         getData()

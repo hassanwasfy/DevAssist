@@ -2,6 +2,7 @@ package com.abaferas.devassist.ui.screen.home
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.abaferas.devassist.ui.navigation.NavigationDestination
 
@@ -13,6 +14,8 @@ fun NavGraphBuilder.addHomeRoute() {
     }
 }
 
-fun NavController.navigateToHome() {
-    navigate(NavigationDestination.ScreenHome.route)
+fun NavController.navigateToHome(builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate(NavigationDestination.ScreenHome.route){
+        builder()
+    }
 }

@@ -16,7 +16,6 @@ import com.abaferas.devassist.ui.theme.color_textColor
 
 @Composable
 fun DevError(
-    isRetrying: Boolean = false,
     errorMsg: String,
     onRetry: () -> Unit = {},
 ) {
@@ -33,7 +32,6 @@ fun DevError(
         DevLabel(text = errorMsg, color = color_textColor)
         Button(
             onClick = onRetry,
-            enabled = !isRetrying,
             colors = ButtonDefaults.buttonColors(
                 contentColor = color_textColor,
                 containerColor = color_primaryColor

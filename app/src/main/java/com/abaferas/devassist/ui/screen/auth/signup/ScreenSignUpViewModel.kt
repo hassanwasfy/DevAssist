@@ -214,7 +214,8 @@ class ScreenSignUpViewModel @Inject constructor(
                     User(
                         id = auth?.user?.uid ?: "",
                         name = iState.value.userNameValue.value,
-                        email = iState.value.userEmailValue.value
+                        email = iState.value.userEmailValue.value,
+                        password = iState.value.passwordValue.value
                     )
                 )
             }
@@ -278,11 +279,8 @@ class ScreenSignUpViewModel @Inject constructor(
 
     override fun onRetry() {
         iState.update {
-            it.copy(
-                isRetrying = true
-            )
+            SignUpUiState()
         }
-        getData()
     }
 
     override fun onTogglePassword() {
