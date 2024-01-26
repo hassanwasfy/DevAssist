@@ -5,8 +5,11 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
@@ -27,7 +30,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.navigation.LocalNavController
 import com.abaferas.devassist.ui.navigation.NavigationDestination
+import com.abaferas.devassist.ui.screen.ai.navigateToAiChat
+import com.abaferas.devassist.ui.screen.books.navigateToBook
 import com.abaferas.devassist.ui.screen.home.navigateToHome
+import com.abaferas.devassist.ui.screen.profile.navigateToProfile
 import com.abaferas.devassist.ui.screen.settings.navigateToSettings
 import com.abaferas.devassist.ui.theme.Tajawal
 import com.abaferas.devassist.ui.theme.color_AccentColor
@@ -51,11 +57,19 @@ fun DevBottomBar() {
             tonalElevation = 12.dp
         ) {
             AddDevBottomItem(
-                icon = Icons.Outlined.Chat, label = R.string.bottom_home,
-                isCurrent = currentScreen == NavigationDestination.ScreenHome.route
+                icon = Icons.Outlined.AccountCircle, label = R.string.bottom_Profile,
+                isCurrent = currentScreen == NavigationDestination.ScreenProfile.route
             ) {
-                if (currentScreen != NavigationDestination.ScreenHome.route) {
-                    controller.navigateToHome()
+                if (currentScreen != NavigationDestination.ScreenProfile.route) {
+                    controller.navigateToProfile()
+                }
+            }
+            AddDevBottomItem(
+                icon = Icons.Outlined.Chat, label = R.string.bottom_Ai,
+                isCurrent = currentScreen == NavigationDestination.ScreenAiChat.route
+            ) {
+                if (currentScreen != NavigationDestination.ScreenAiChat.route) {
+                    controller.navigateToAiChat()
                 }
             }
             AddDevBottomItem(
@@ -67,19 +81,11 @@ fun DevBottomBar() {
                 }
             }
             AddDevBottomItem(
-                icon = Icons.Outlined.Home, label = R.string.bottom_home,
-                isCurrent = currentScreen == NavigationDestination.ScreenHome.route
+                icon = Icons.Outlined.MenuBook, label = R.string.bottom_Books,
+                isCurrent = currentScreen == NavigationDestination.ScreenBook.route
             ) {
-                if (currentScreen != NavigationDestination.ScreenHome.route) {
-                    controller.navigateToHome()
-                }
-            }
-            AddDevBottomItem(
-                icon = Icons.Outlined.Home, label = R.string.bottom_home,
-                isCurrent = currentScreen == NavigationDestination.ScreenHome.route
-            ) {
-                if (currentScreen != NavigationDestination.ScreenHome.route) {
-                    controller.navigateToHome()
+                if (currentScreen != NavigationDestination.ScreenBook.route) {
+                    controller.navigateToBook()
                 }
             }
             AddDevBottomItem(

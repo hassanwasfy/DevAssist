@@ -8,11 +8,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import com.abaferas.devassist.ui.screen.ai.addAiChatRoute
 import com.abaferas.devassist.ui.screen.auth.login.addLoginRoute
 import com.abaferas.devassist.ui.screen.auth.signup.addSignUpRoute
+import com.abaferas.devassist.ui.screen.books.addBookRoute
 import com.abaferas.devassist.ui.screen.home.addHomeRoute
 import com.abaferas.devassist.ui.screen.item.addEditItemRoute
 import com.abaferas.devassist.ui.screen.item.addNewItemRoute
+import com.abaferas.devassist.ui.screen.profile.addProfileRoute
 import com.abaferas.devassist.ui.screen.settings.addSettingsRoute
 import com.abaferas.devassist.ui.screen.splash.addSplashRoute
 
@@ -46,5 +49,9 @@ fun AppNavigationNavGraph() {
         addNewItemRoute()
         addEditItemRoute()
         addSettingsRoute()
+        addAiChatRoute()
+        addProfileRoute()
+        addBookRoute()
+
     }
 }
