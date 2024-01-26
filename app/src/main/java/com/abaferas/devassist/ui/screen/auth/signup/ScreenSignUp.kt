@@ -34,6 +34,7 @@ import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLabelClick
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTextField
+import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.screen.auth.login.navigateToLogin
 import com.abaferas.devassist.ui.screen.home.navigateToHome
@@ -82,18 +83,8 @@ fun ScreenSignUpContent(
         isInternetConnected = state.isInternetConnected,
         onRetry = interaction::onRetry,
         topBar = {
-            TopAppBar(
-                title = {
-                    DevLabel(
-                        text = "SignUp",
-                        fontSize = 24,
-                        color = color_textColor
-                    )
-                }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = color_darkPrimaryColor,
-                    titleContentColor = color_textColor
-                )
-            )
+            DevTopAppBarWithLogo("SignUp")
+
         }
     ) {
 

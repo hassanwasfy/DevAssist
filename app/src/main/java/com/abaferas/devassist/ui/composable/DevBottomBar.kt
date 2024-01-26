@@ -54,7 +54,7 @@ fun DevBottomBar() {
     ) {
         BottomAppBar(
             containerColor = color_primaryColor,
-            tonalElevation = 12.dp
+            tonalElevation = 12.dp,
         ) {
             AddDevBottomItem(
                 icon = Icons.Outlined.AccountCircle, label = R.string.bottom_Profile,
@@ -110,9 +110,9 @@ fun RowScope.AddDevBottomItem(
     val currentColor by animateColorAsState(
         targetValue =
         if (isCurrent)
-            color_darkPrimaryColor
+            color_lightPrimaryColor
         else
-            color_backgroundColor,
+            color_dividerColor,
         label = "",
         animationSpec = tween(
             durationMillis = 300
@@ -120,7 +120,8 @@ fun RowScope.AddDevBottomItem(
     )
 
     NavigationBarItem(
-        selected = isCurrent, alwaysShowLabel = true,
+        selected = isCurrent,
+        alwaysShowLabel = false,
         enabled = true,
         onClick = onClick,
         icon = {
@@ -142,14 +143,9 @@ fun RowScope.AddDevBottomItem(
             )
         },
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = color_darkPrimaryColor,
-            unselectedIconColor = color_lightPrimaryColor,
-            selectedTextColor = color_darkPrimaryColor,
-            unselectedTextColor = color_lightPrimaryColor,
             indicatorColor = color_primaryColor,
         )
     )
-
 }
 
 @Composable

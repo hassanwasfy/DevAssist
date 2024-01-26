@@ -78,3 +78,62 @@ fun DevTextField(
         visualTransformation = visualTransformation
     )
 }
+
+@Composable
+fun DevTextFieldClickLeading(
+    modifier: Modifier = Modifier,
+    value: String,
+    isError: Boolean,
+    errorText: String,
+    placeholder: String,
+    leadingIcon: ImageVector? = null,
+    trailingIcon: ImageVector? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    onTogglePassword: () -> Unit = {},
+    keyboardType:KeyboardType = KeyboardType.Text,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedIndicatorColor = color_darkPrimaryColor,
+        unfocusedContainerColor = color_lightPrimaryColor
+    ),
+    onClickIcon:() -> Unit = {},
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        modifier = modifier,
+        onValueChange = onValueChange,
+        supportingText = {
+            AnimatedVisibility(
+                visible = isError
+            ) {
+                DevLabel(
+                    text = errorText,
+                    fontSize = 12,
+                    color = Color.Red
+                )
+            }
+        },
+        leadingIcon = {
+            leadingIcon?.let {
+                Icon(imageVector = it, contentDescription = "",modifier = Modifier.clickable { onClickIcon() })
+            }
+        },
+        trailingIcon = {
+            trailingIcon?.let {
+                Icon(imageVector = it, contentDescription = "",modifier = Modifier.clickable { onTogglePassword() })
+            }
+        },
+        placeholder = {
+            DevLabel(
+                modifier = Modifier,
+                text = placeholder,
+                fontSize = 16,
+            )
+        },
+        isError = isError,
+        shape = roundCornerShape(corner = 16),
+        colors = colors,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = visualTransformation
+    )
+}

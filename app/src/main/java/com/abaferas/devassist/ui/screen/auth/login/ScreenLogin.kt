@@ -35,6 +35,7 @@ import com.abaferas.devassist.ui.composable.DevButton
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTextField
+import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
 import com.abaferas.devassist.ui.navigation.NavigationDestination
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.screen.home.navigateToHome
@@ -81,18 +82,8 @@ fun ScreenLoginContent(
         isInternetConnected = state.isInternetConnected,
         onRetry = interaction::onRetry,
         topBar = {
-            TopAppBar(
-                title = {
-                    DevLabel(
-                        text = "Login",
-                        fontSize = 24,
-                        color = color_textColor
-                    )
-                }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = color_darkPrimaryColor,
-                    titleContentColor = color_textColor
-                )
-            )
+            DevTopAppBarWithLogo("Login")
+
         }
     ) {
 

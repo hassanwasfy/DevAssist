@@ -12,7 +12,7 @@ fun NavGraphBuilder.addEditItemRoute() {
         route = "${NavigationDestination.ScreenEditItem.route}/{${ViewItemScreenArgs.ITEM_ID}}",
         arguments = listOf(
             navArgument(ViewItemScreenArgs.ITEM_ID){
-                type = NavType.IntType
+                type = NavType.StringType
             }
         )
     ) {
@@ -20,7 +20,7 @@ fun NavGraphBuilder.addEditItemRoute() {
     }
 }
 
-fun NavController.navigateToEditItem(itemId: Int) {
+fun NavController.navigateToEditItem(itemId: String) {
     navigate("${NavigationDestination.ScreenEditItem.route}/{$itemId}")
 }
 

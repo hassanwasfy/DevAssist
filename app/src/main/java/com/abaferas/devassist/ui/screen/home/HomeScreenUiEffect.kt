@@ -5,5 +5,5 @@ import com.abaferas.devassist.ui.base.BaseUiEffect
 sealed class HomeScreenUiEffect : BaseUiEffect {
     data object NavigateUp : HomeScreenUiEffect()
     data object AddNewItem : HomeScreenUiEffect()
-    data class EditCurrentItem(val itemId: Int) : HomeScreenUiEffect()
+    data class EditCurrentItem(val itemId: String) : HomeScreenUiEffect()
 }
