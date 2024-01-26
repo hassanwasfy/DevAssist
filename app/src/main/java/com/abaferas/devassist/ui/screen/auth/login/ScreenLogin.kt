@@ -106,13 +106,13 @@ fun ScreenLoginContent(
                 horizontalAlignment = Alignment.Start
             ) {
                 DevLabel(
-                    text = "Welcome to DevAssist,",
+                    text = "Welcome back Developer!",
                     fontSize = 20,
                     color = color_textPrimaryColor,
                     fontWeight = FontWeight.ExtraBold
                 )
                 DevLabel(
-                    text = "Few Steps To a fantastic journey!",
+                    text = "Ready for the next milestone?",
                     fontSize = 18,
                     color = color_textPrimaryColor,
                     fontWeight = FontWeight.Medium

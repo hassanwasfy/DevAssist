@@ -1,5 +1,6 @@
 package com.abaferas.devassist.ui.screen.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import com.abaferas.devassist.ui.screen.item.navigateToEditItem
 import com.abaferas.devassist.ui.screen.item.navigateToNewItem
 import com.abaferas.devassist.ui.theme.Tajawal
 import com.abaferas.devassist.ui.theme.color_AccentColor
+import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_primaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
 import com.abaferas.devassist.ui.theme.color_textPrimaryColor
@@ -88,6 +90,7 @@ fun ScreenHomeContent(
         }) {
         LazyColumn(
             modifier = Modifier
+                .background(color_lightPrimaryColor)
                 .fillMaxSize()
                 .padding(top = 72.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),

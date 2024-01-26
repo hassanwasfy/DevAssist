@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DevAssist</string>
+    <string name="bottom_home">Home</string>
+    <string name="bottom_Books">Books</string>
+    <string name="bottom_Ai">Ai</string>
+    <string name="bottom_Settings">Settings</string>
+    <string name="bottom_Profile">Profile</string>
+
 </resources>

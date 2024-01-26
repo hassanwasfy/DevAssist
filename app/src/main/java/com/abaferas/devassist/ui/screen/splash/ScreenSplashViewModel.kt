@@ -1,11 +1,15 @@
 package com.abaferas.devassist.ui.screen.splash
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.abaferas.devassist.data.repository.IRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +27,22 @@ class ScreenSplashViewModel @Inject constructor(
             it.copy(
                 isLoading = false
             )
+        }
+        viewModelScope.launch(Dispatchers.Main) {
+            for (i in 0 until 4){
+                delay(200)
+                iState.update {
+                    it.copy(
+                        progress = it.progress + 0.25f
+                    )
+                }
+            }
+            delay(200)
+            if (repository.isUserLoggedIn() == null){
+                sendUiEffect(SplashScreenUiEffect.SignUp)
+            }else{
+                sendUiEffect(SplashScreenUiEffect.Home)
+            }
         }
 
     }

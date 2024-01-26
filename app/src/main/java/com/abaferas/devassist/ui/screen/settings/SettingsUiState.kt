@@ -1,11 +1,10 @@
-package com.abaferas.devassist.ui.screen.splash
+package com.abaferas.devassist.ui.screen.settings
 
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.ErrorUiState
 
 
-data class SplashUiState(
+data class SettingsUiState(
     val isLoading: Boolean = true,
-    val error: ErrorUiState = ErrorUiState(),
-    val progress: Float = 0.0f,
+    val error: ErrorUiState = ErrorUiState()
 ) : BaseUiState
