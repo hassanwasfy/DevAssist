@@ -33,7 +33,7 @@ fun DevScaffold(
     isError: Boolean = false,
     errorMsg: String = "",
     isInternetConnected: Boolean = true,
-    onRetry: () -> Unit = {},
+    onRetry: () -> Unit,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floating: @Composable () -> Unit = {},
@@ -44,7 +44,7 @@ fun DevScaffold(
             onRetry = onRetry,
         )
     },
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -86,28 +86,6 @@ fun DevScaffold(
             )
         ) {
             content()
-        }
-        AnimatedVisibility(visible = !isInternetConnected) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.no_internet_connection),
-                    contentDescription = ""
-                )
-                Button(
-                    onClick = onRetry,
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = color_textColor,
-                        containerColor = color_primaryColor
-                    )
-                ) {
-                    DevLabel(text = "Try Again", color = color_textColor)
-                }
-            }
         }
     }
 }

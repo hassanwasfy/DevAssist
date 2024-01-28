@@ -28,11 +28,13 @@ fun DevTextField(
     isError: Boolean,
     errorText: String,
     placeholder: String,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onTogglePassword: () -> Unit = {},
-    keyboardType:KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Text,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = color_darkPrimaryColor,
         unfocusedContainerColor = color_lightPrimaryColor
@@ -43,6 +45,8 @@ fun DevTextField(
         value = value,
         modifier = modifier,
         onValueChange = onValueChange,
+        enabled = enabled,
+        readOnly = readOnly,
         supportingText = {
             AnimatedVisibility(
                 visible = isError
@@ -61,7 +65,10 @@ fun DevTextField(
         },
         trailingIcon = {
             trailingIcon?.let {
-                Icon(imageVector = it, contentDescription = "",modifier = Modifier.clickable { onTogglePassword() })
+                Icon(
+                    imageVector = it,
+                    contentDescription = "",
+                    modifier = Modifier.clickable { onTogglePassword() })
             }
         },
         placeholder = {
@@ -86,22 +93,26 @@ fun DevTextFieldClickLeading(
     isError: Boolean,
     errorText: String,
     placeholder: String,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onTogglePassword: () -> Unit = {},
-    keyboardType:KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Text,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = color_darkPrimaryColor,
         unfocusedContainerColor = color_lightPrimaryColor
     ),
-    onClickIcon:() -> Unit = {},
+    onClickIcon: () -> Unit = {},
+    onTogglePassword: () -> Unit = {},
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         value = value,
         modifier = modifier,
         onValueChange = onValueChange,
+        enabled = enabled,
+        readOnly = readOnly,
         supportingText = {
             AnimatedVisibility(
                 visible = isError
@@ -115,12 +126,18 @@ fun DevTextFieldClickLeading(
         },
         leadingIcon = {
             leadingIcon?.let {
-                Icon(imageVector = it, contentDescription = "",modifier = Modifier.clickable { onClickIcon() })
+                Icon(
+                    imageVector = it,
+                    contentDescription = "",
+                    modifier = Modifier.clickable { onClickIcon() })
             }
         },
         trailingIcon = {
             trailingIcon?.let {
-                Icon(imageVector = it, contentDescription = "",modifier = Modifier.clickable { onTogglePassword() })
+                Icon(
+                    imageVector = it,
+                    contentDescription = "",
+                    modifier = Modifier.clickable { onTogglePassword() })
             }
         },
         placeholder = {

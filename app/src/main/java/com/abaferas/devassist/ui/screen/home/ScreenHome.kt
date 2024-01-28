@@ -93,22 +93,28 @@ fun ScreenHomeContent(
     interaction: HomeScreenInteraction
 ) {
     DevScaffold(
-        isLoading = false, isError = false,
+        isLoading = state.isLoading,
+        isError = state.error.isError,
+        errorMsg = state.error.message,
+        isInternetConnected = state.isInternetConnected,
+        onRetry = interaction::onClickRetry,
         topBar = {
             DevTopAppBarWithLogo("Home")
         },
         floating = {
-            FloatingActionButton(
-                modifier = Modifier.padding(bottom = 72.dp),
-                onClick = interaction::onClickAddNewItem,
-                containerColor = color_AccentColor
-            ) {
-                Icon(
-                    modifier = Modifier,
-                    imageVector = Icons.Outlined.AddTask,
-                    contentDescription = "",
-                    tint = color_textColor
-                )
+            AnimatedVisibility(visible = !state.error.isError) {
+                FloatingActionButton(
+                    modifier = Modifier.padding(bottom = 72.dp),
+                    onClick = interaction::onClickAddNewItem,
+                    containerColor = color_AccentColor
+                ) {
+                    Icon(
+                        modifier = Modifier,
+                        imageVector = Icons.Outlined.AddTask,
+                        contentDescription = "",
+                        tint = color_textColor
+                    )
+                }
             }
         }
     ) {
@@ -166,8 +172,10 @@ fun ScreenHomeContent(
             }
             AnimatedVisibility(visible = state.items.isEmpty()) {
                 Column(
-                    modifier = Modifier.padding(bottom = 56.dp)
-                        .weight(1f).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(bottom = 56.dp)
+                        .weight(1f)
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

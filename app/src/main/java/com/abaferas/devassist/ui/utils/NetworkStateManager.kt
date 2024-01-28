@@ -15,10 +15,18 @@ class NetworkStateManager @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val networkCapabilities = connectivityManager.activeNetwork ?: return false
             val capabilities = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-            return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            return if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
+                true
+            }else{
+                throw DevAssistException.NoInternetConnection
+            }
         } else {
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected
+            return if (activeNetworkInfo != null && activeNetworkInfo.isConnected){
+                true
+            }else{
+                throw DevAssistException.NoInternetConnection
+            }
         }
     }
 }

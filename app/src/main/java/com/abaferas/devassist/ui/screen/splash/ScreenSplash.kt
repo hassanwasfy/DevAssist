@@ -65,7 +65,8 @@ fun ScreenSplashContent(
 ) {
     DevScaffold(
         isError = state.error.isError,
-        isLoading = state.isLoading
+        isLoading = state.isLoading,
+        onRetry = {}
     ) {
         Column(
             modifier = Modifier

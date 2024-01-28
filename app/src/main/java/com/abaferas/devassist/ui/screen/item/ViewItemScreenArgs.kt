@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 
 class ViewItemScreenArgs(savedStateHandle: SavedStateHandle) {
 
-    val itemId: Int = savedStateHandle[ITEM_ID] ?: 0
+    val itemId: String = savedStateHandle[ITEM_ID] ?: ""
 
     companion object {
         const val ITEM_ID = "item_id"

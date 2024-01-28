@@ -33,7 +33,8 @@ fun ScreenSettingsContent(
 ) {
     DevScaffold(
         isLoading = state.isLoading,
-        isError = state.error.isError
+        isError = state.error.isError,
+        onRetry = {}
     ) {
         DevLabel(text = "Settings")
     }
