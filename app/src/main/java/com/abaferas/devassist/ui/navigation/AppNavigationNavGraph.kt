@@ -13,8 +13,9 @@ import com.abaferas.devassist.ui.screen.auth.login.addLoginRoute
 import com.abaferas.devassist.ui.screen.auth.signup.addSignUpRoute
 import com.abaferas.devassist.ui.screen.books.addBookRoute
 import com.abaferas.devassist.ui.screen.home.addHomeRoute
-import com.abaferas.devassist.ui.screen.item.addEditItemRoute
-import com.abaferas.devassist.ui.screen.item.addNewItemRoute
+import com.abaferas.devassist.ui.screen.item.edititem.addEditItemRoute
+import com.abaferas.devassist.ui.screen.item.selecttype.addSelectTypeRoute
+import com.abaferas.devassist.ui.screen.item.newitem.addNewItemRoute
 import com.abaferas.devassist.ui.screen.profile.addProfileRoute
 import com.abaferas.devassist.ui.screen.settings.addSettingsRoute
 import com.abaferas.devassist.ui.screen.splash.addSplashRoute
@@ -29,7 +30,7 @@ fun AppNavigationNavGraph() {
             fadeIn(
                 animationSpec = tween(300),
                 ) + slideIntoContainer(
-                animationSpec = tween(300, delayMillis = 200, easing = EaseIn),
+                animationSpec = tween(300, easing = EaseIn),
                 towards = SlideDirection.Start
             )
         },
@@ -46,12 +47,12 @@ fun AppNavigationNavGraph() {
         addSignUpRoute()
         addLoginRoute()
         addHomeRoute()
-        addNewItemRoute()
-        addEditItemRoute()
         addSettingsRoute()
         addAiChatRoute()
         addProfileRoute()
         addBookRoute()
-
+        addNewItemRoute()
+        addEditItemRoute()
+        addSelectTypeRoute()
     }
 }

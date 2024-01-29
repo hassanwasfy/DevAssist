@@ -11,7 +11,5 @@ sealed class NavigationDestination(val route: String) {
     data object ScreenAiChat: NavigationDestination("ScreenAiChat")
     data object ScreenProfile: NavigationDestination("ScreenProfile")
     data object ScreenBook: NavigationDestination("ScreenBook")
-
-
-
+    data object ScreenSelectType: NavigationDestination("ScreenSelectType")
 }

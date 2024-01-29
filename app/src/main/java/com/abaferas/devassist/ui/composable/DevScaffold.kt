@@ -29,11 +29,11 @@ import com.abaferas.devassist.ui.theme.color_textColor
 @Composable
 fun DevScaffold(
     modifier: Modifier = Modifier,
-    isLoading: Boolean = true,
-    isError: Boolean = false,
-    errorMsg: String = "",
+    isLoading: Boolean,
+    isError: Boolean,
+    errorMsg: String,
     isInternetConnected: Boolean = true,
-    onRetry: () -> Unit,
+    onRetry: () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floating: @Composable () -> Unit = {},

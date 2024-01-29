@@ -13,10 +13,9 @@ data class LearningItem(
     val totalAmount: Int,
     val finishedAmount: Int,
     val progress: Float,
-) {
-    enum class LearningType {
-        COURSE, BOOK,
-    }
+)
+enum class LearningType {
+    Video, BOOK, PLAY_LIST, Azkar
 }
 
 
@@ -25,7 +24,7 @@ val homeList = listOf(
         id = "1",
         userId = 1,
         name = "Atomic",
-        type = LearningItem.LearningType.BOOK,
+        type = LearningType.BOOK,
         author = "Jhon",
         startDate = "22 Dec",
         endDate = "28 Dec",
@@ -39,7 +38,7 @@ val homeList = listOf(
         id = "2",
         userId = 1,
         name = "Atomic",
-        type = LearningItem.LearningType.BOOK,
+        type = LearningType.BOOK,
         author = "Jhon",
         startDate = "22 Dec",
         endDate = "28 Dec",
@@ -53,7 +52,7 @@ val homeList = listOf(
         id = "3",
         userId = 1,
         name = "Atomic",
-        type = LearningItem.LearningType.BOOK,
+        type = LearningType.BOOK,
         author = "Jhon",
         startDate = "22 Dec",
         endDate = "28 Dec",
@@ -67,7 +66,7 @@ val homeList = listOf(
         id = "4",
         userId = 1,
         name = "Atomic",
-        type = LearningItem.LearningType.BOOK,
+        type = LearningType.BOOK,
         author = "Jhon",
         startDate = "22 Dec",
         endDate = "28 Dec",

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.abaferas.devassist.ui.composable.modifier.roundCornerShape
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
+import com.abaferas.devassist.ui.theme.color_textColor
 
 @Composable
 fun DevTextField(
@@ -96,6 +97,7 @@ fun DevTextFieldClickLeading(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     leadingIcon: ImageVector? = null,
+    leadingTint: Color = color_textColor,
     trailingIcon: ImageVector? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -127,6 +129,7 @@ fun DevTextFieldClickLeading(
         leadingIcon = {
             leadingIcon?.let {
                 Icon(
+                    tint = leadingTint,
                     imageVector = it,
                     contentDescription = "",
                     modifier = Modifier.clickable { onClickIcon() })

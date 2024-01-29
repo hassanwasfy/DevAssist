@@ -66,6 +66,7 @@ fun ScreenSplashContent(
     DevScaffold(
         isError = state.error.isError,
         isLoading = state.isLoading,
+        errorMsg = state.error.message,
         onRetry = {}
     ) {
         Column(

@@ -1,8 +1,8 @@
-package com.abaferas.devassist.ui.screen.item
+package com.abaferas.devassist.ui.screen.item.edititem
 
 import androidx.lifecycle.SavedStateHandle
 
-class ViewItemScreenArgs(savedStateHandle: SavedStateHandle) {
+class EditItemScreenArgs(savedStateHandle: SavedStateHandle) {
 
     val itemId: String = savedStateHandle[ITEM_ID] ?: ""
 

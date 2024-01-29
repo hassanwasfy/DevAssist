@@ -49,7 +49,10 @@ class ScreenLoginViewModel @Inject constructor(
     }
 
     override fun onEmailValueChange(value: String) {
-        if (Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$").matches(value) || value.isEmpty()) {
+        if (
+            Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$").matches(value) ||
+            value.isEmpty()
+        ) {
             iState.update {
                 it.copy(
                     userEmailValue = EntryTextValue(

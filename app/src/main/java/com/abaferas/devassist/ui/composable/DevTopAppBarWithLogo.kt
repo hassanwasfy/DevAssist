@@ -1,6 +1,7 @@
 package com.abaferas.devassist.ui.composable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -18,23 +19,29 @@ import com.abaferas.devassist.ui.theme.color_textColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DevTopAppBarWithLogo(label: String){
+fun DevTopAppBarWithLogo(
+    label: String,
+    actions: @Composable RowScope.() -> Unit = {},
+    navigationIcon: @Composable () -> Unit = {
+        Image(
+            modifier = Modifier.size(48.dp),
+            painter = painterResource(id = R.drawable.logo_png),
+            contentDescription = "", colorFilter = ColorFilter.tint(
+                color_lightPrimaryColor
+            )
+        )
+    },
+
+    ) {
     TopAppBar(
         title = { Text(text = label) },
-        navigationIcon = {
-            Image(
-                modifier = Modifier.size(48.dp),
-                painter = painterResource(id = R.drawable.logo_png),
-                contentDescription = "", colorFilter = ColorFilter.tint(
-                    color_lightPrimaryColor
-                )
-            )
-        },
+        navigationIcon = navigationIcon,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = color_primaryColor,
             titleContentColor = color_textColor,
             actionIconContentColor = color_textColor,
             navigationIconContentColor = color_textColor
-        )
+        ),
+        actions = actions
     )
 }

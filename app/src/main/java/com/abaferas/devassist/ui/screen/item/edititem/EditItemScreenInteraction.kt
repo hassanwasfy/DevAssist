@@ -1,6 +1,6 @@
-package com.abaferas.devassist.ui.screen.item
+package com.abaferas.devassist.ui.screen.item.edititem
 
-interface ViewItemScreenInteraction {
+interface EditItemScreenInteraction {
     fun onClickBack()
     fun onNameChange(value: String)
     fun onAuthorChange(value: String)
