@@ -36,6 +36,8 @@ fun DevTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onTogglePassword: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
+    maxLines: Int = 1,
+    singleLine: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = color_darkPrimaryColor,
         unfocusedContainerColor = color_lightPrimaryColor
@@ -48,6 +50,8 @@ fun DevTextField(
         onValueChange = onValueChange,
         enabled = enabled,
         readOnly = readOnly,
+        singleLine = singleLine,
+        maxLines = maxLines,
         supportingText = {
             AnimatedVisibility(
                 visible = isError
@@ -83,7 +87,7 @@ fun DevTextField(
         shape = roundCornerShape(corner = 16),
         colors = colors,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
     )
 }
 
@@ -93,6 +97,8 @@ fun DevTextFieldClickLeading(
     value: String,
     isError: Boolean,
     errorText: String,
+    maxLines: Int = 1,
+    singleLine: Boolean = true,
     placeholder: String,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -111,6 +117,8 @@ fun DevTextFieldClickLeading(
 ) {
     OutlinedTextField(
         value = value,
+        singleLine = singleLine,
+        maxLines = maxLines,
         modifier = modifier,
         onValueChange = onValueChange,
         enabled = enabled,
