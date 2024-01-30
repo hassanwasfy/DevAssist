@@ -25,6 +25,7 @@ fun DevButton(
     fontFamily: FontFamily = Tajawal,
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = color_textColor,
+    enabled: Boolean = true,
     textAlign: TextAlign = TextAlign.Start,
     shape: Shape = roundCornerShape(corner = 12),
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -38,6 +39,7 @@ fun DevButton(
         onClick = onClick,
         colors = colors,
         shape = shape,
+        enabled = enabled
     ) {
         DevLabel(
             modifier = Modifier,
