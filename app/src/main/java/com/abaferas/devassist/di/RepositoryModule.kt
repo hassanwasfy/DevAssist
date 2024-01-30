@@ -1,7 +1,9 @@
 package com.abaferas.devassist.di
 
-import com.abaferas.devassist.data.repository.IRepository
-import com.abaferas.devassist.data.repository.RepositoryImpl
+import com.abaferas.devassist.data.repository.AuthRepository
+import com.abaferas.devassist.data.repository.AuthRepositoryImpl
+import com.abaferas.devassist.data.repository.LearningItemsRepository
+import com.abaferas.devassist.data.repository.LearningItemsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,6 +17,11 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun provideRepository(iRepositoryImpl: RepositoryImpl): IRepository
+    abstract fun provideAuthRepository(iAuthRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideItemsRepository(learningItemsRepositoryImpl: LearningItemsRepositoryImpl): LearningItemsRepository
+
 
 }
