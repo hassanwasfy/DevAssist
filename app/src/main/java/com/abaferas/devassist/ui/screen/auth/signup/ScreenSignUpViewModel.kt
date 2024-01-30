@@ -1,9 +1,8 @@
 package com.abaferas.devassist.ui.screen.auth.signup
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import com.abaferas.devassist.data.model.User
-import com.abaferas.devassist.data.repository.IRepository
+import com.abaferas.devassist.data.model.UserDto
+import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
@@ -13,14 +12,13 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.firestore.DocumentReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ScreenSignUpViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
-    private val repository: IRepository
+    private val repository: AuthRepository
 ) : BaseViewModel<SignUpUiState, SignUpScreenUiEffect>(SignUpUiState()), SignUpScreenInteraction {
 
     private val args: SignUpScreenArgs = SignUpScreenArgs(savedStateHandle = savedStateHandle)
@@ -211,7 +209,7 @@ class ScreenSignUpViewModel @Inject constructor(
                 onError = ::onSaveUserError
             ) {
                 repository.insertNewUser(
-                    User(
+                    UserDto(
                         id = auth?.user?.uid ?: "",
                         name = iState.value.userNameValue.value,
                         email = iState.value.userEmailValue.value,
@@ -223,18 +221,19 @@ class ScreenSignUpViewModel @Inject constructor(
         }.addOnFailureListener { e ->
             iState.update {
                 it.copy(
-                    error = ErrorUiState(true,e.message.toString())
+                    error = ErrorUiState(true, e.message.toString())
                 )
             }
         }
     }
 
-    private fun onSaveUserSuccess(result: Task<DocumentReference?>){
+    private fun onSaveUserSuccess(result: Task<DocumentReference?>) {
         result.addOnSuccessListener {
             sendUiEffect(SignUpScreenUiEffect.NavigateUp)
         }
     }
-    private fun onSaveUserError(errMsg: String){
+
+    private fun onSaveUserError(errMsg: String) {
         iState.update {
             it.copy(
                 error = ErrorUiState(isError = true, message = errMsg)
@@ -263,12 +262,29 @@ class ScreenSignUpViewModel @Inject constructor(
                     )
                 )
             }
-        }else {
+        } else {
             tryToExecute(
                 onSuccess = ::onSuccess,
                 onError = ::onError
             ) {
-                repository.signInAnonymous()
+                repository.signInAnonymous().addOnSuccessListener { auth ->
+                    tryToExecute(
+                        onSuccess = ::onSaveUserSuccess,
+                        onError = ::onSaveUserError
+                    ) {
+                        repository.insertNewUser(
+                            UserDto(
+                                id = auth?.user?.uid ?: "",
+                                name = iState.value.userNameValue.value,
+                                email = iState.value.userEmailValue.value,
+                                password = iState.value.passwordValue.value
+                            )
+                        )
+                    }
+                    sendUiEffect(SignUpScreenUiEffect.NavigateToHome)
+                }.addOnFailureListener {
+                    onError(it.message.toString())
+                }
             }
         }
     }

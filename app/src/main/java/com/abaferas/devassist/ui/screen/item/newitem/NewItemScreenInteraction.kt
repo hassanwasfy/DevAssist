@@ -12,5 +12,6 @@ interface NewItemScreenInteraction {
     fun onDismiss()
     fun onOpenStartDialog()
     fun onOpenEndDialog()
+    fun isValidated(): Boolean
 
 }

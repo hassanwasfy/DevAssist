@@ -1,10 +1,8 @@
 package com.abaferas.devassist.ui.screen.splash
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.abaferas.devassist.data.repository.IRepository
+import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -14,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScreenSplashViewModel @Inject constructor(
-    private val repository: IRepository
+    private val repository: AuthRepository
 ) : BaseViewModel<SplashUiState, SplashScreenUiEffect>(SplashUiState()), SplashScreenInteraction {
 
 

@@ -1,18 +1,24 @@
 package com.abaferas.devassist.ui.screen.home
 
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddReaction
+import androidx.compose.material.icons.outlined.MenuBook
+import androidx.compose.material.icons.outlined.OndemandVideo
+import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.abaferas.devassist.data.repository.IRepository
+import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.ErrorUiState
 import com.abaferas.devassist.ui.utils.NetworkStateManager
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScreenHomeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: IRepository,
+    private val repository: AuthRepository,
     private val networkStateManager: NetworkStateManager
 ) : BaseViewModel<HomeUiState, HomeScreenUiEffect>(HomeUiState()), HomeScreenInteraction {
 
@@ -34,9 +40,24 @@ class ScreenHomeViewModel @Inject constructor(
         if (networkStateManager.isInternetAvailable()) {
             try {
                 viewModelScope.launch(Dispatchers.IO) {
+                    val list = repository.getAllLearningItems(
+                        async {
+                            repository.getUserId()
+                    }.await())
+
+                    list.catch {
+                        onError(it.message.toString())
+                    }.collect{items ->
+                        iState.update {
+                            it.copy(
+                                isLoading = false,
+                                items = items
+                            )
+                        }
+                    }
 
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 iState.update {
                     it.copy(
                         isLoading = false,
@@ -82,8 +103,8 @@ class ScreenHomeViewModel @Inject constructor(
     }
 
     override fun onClickRetry() {
-        Log.i("XCV","Retry clicked")
-        iState.update { HomeUiState()  }
+        Log.i("XCV", "Retry clicked")
+        iState.update { HomeUiState() }
         getData()
     }
 
@@ -105,6 +126,23 @@ class ScreenHomeViewModel @Inject constructor(
 
     override fun onClickSearch() {
 
+    }
+
+    override fun iconFinder(type: LearningType): ImageVector {
+        return when(type){
+            LearningType.Video -> {
+                Icons.Outlined.OndemandVideo
+            }
+            LearningType.BOOK -> {
+                Icons.Outlined.MenuBook
+            }
+            LearningType.PLAY_LIST -> {
+                Icons.Outlined.VideoLibrary
+            }
+            LearningType.Azkar -> {
+                Icons.Outlined.AddReaction
+            }
+        }
     }
 }
 

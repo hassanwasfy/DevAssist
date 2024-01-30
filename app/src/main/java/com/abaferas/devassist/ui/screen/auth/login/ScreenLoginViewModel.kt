@@ -1,11 +1,10 @@
 package com.abaferas.devassist.ui.screen.auth.login
 
 import androidx.lifecycle.SavedStateHandle
-import com.abaferas.devassist.data.repository.IRepository
+import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
-import com.abaferas.devassist.ui.screen.auth.signup.SignUpUiState
 import com.abaferas.devassist.ui.utils.NetworkStateManager
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class ScreenLoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
-    private val repository: IRepository
+    private val repository: AuthRepository
 ) : BaseViewModel<LoginUiState, LoginScreenUiEffect>(LoginUiState()), LoginScreenInteraction {
 
     private val args: LoginScreenArgs = LoginScreenArgs(savedStateHandle = savedStateHandle)

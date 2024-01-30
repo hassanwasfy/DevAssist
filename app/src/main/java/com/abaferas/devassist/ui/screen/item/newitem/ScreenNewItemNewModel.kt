@@ -1,18 +1,33 @@
 package com.abaferas.devassist.ui.screen.item.newitem
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddReaction
+import androidx.compose.material.icons.outlined.MenuBook
+import androidx.compose.material.icons.outlined.OndemandVideo
+import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.abaferas.devassist.data.model.LearningItem
 import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
+import com.abaferas.devassist.ui.base.ErrorUiState
+import com.abaferas.devassist.ui.screen.item.newitem.NewItemScreenArgs.Companion.TYPE_NAME
+import com.abaferas.devassist.ui.utils.DateFormatter
 import com.abaferas.devassist.ui.utils.NetworkStateManager
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ScreenNewItemNewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val networkStateManager: NetworkStateManager
+    private val networkStateManager: NetworkStateManager,
+    private val repository: AuthRepository
 ) : BaseViewModel<NewItemUiState, NewItemScreenUiEffect>(NewItemUiState()),
     NewItemScreenInteraction {
 
@@ -23,14 +38,15 @@ class ScreenNewItemNewModel @Inject constructor(
     }
 
     override fun getData() {
-        val id: String? = savedStateHandle[args.type]
-        id?.let { type ->
-            when(type){
+        val id: String = savedStateHandle[TYPE_NAME] ?: ""
+        id.let { type ->
+            when (type) {
                 "Book" -> {
                     iState.update {
                         it.copy(
                             isLoading = false,
-                            type = LearningType.BOOK
+                            type = LearningType.BOOK,
+                            typeIcon = Icons.Outlined.MenuBook
                         )
                     }
                 }
@@ -38,7 +54,8 @@ class ScreenNewItemNewModel @Inject constructor(
                     iState.update {
                         it.copy(
                             isLoading = false,
-                            type = LearningType.Azkar
+                            type = LearningType.Azkar,
+                            typeIcon = Icons.Outlined.AddReaction
                         )
                     }
                 }
@@ -46,7 +63,8 @@ class ScreenNewItemNewModel @Inject constructor(
                     iState.update {
                         it.copy(
                             isLoading = false,
-                            type = LearningType.PLAY_LIST
+                            type = LearningType.PLAY_LIST,
+                            typeIcon = Icons.Outlined.VideoLibrary
                         )
                     }
                 }
@@ -54,13 +72,13 @@ class ScreenNewItemNewModel @Inject constructor(
                     iState.update {
                         it.copy(
                             isLoading = false,
-                            type = LearningType.Video
+                            type = LearningType.Video,
+                            typeIcon = Icons.Outlined.OndemandVideo
                         )
                     }
                 }
             }
         }
-
     }
 
     override fun onClickBack() {
@@ -68,59 +86,225 @@ class ScreenNewItemNewModel @Inject constructor(
     }
 
     override fun onError(errorMsg: String) {
-
+        iState.update {
+            it.copy(
+                error = ErrorUiState(true, errorMsg)
+            )
+        }
     }
 
     override fun onNameChange(value: String) {
-        iState.update {
-            it.copy(
-                name = EntryTextValue(value = value)
-            )
+        if (value.length < 4) {
+            iState.update {
+                it.copy(
+                    name = EntryTextValue(
+                        value = value,
+                        error = ErrorUiState(true, "can't be less 4")
+                    )
+                )
+            }
+        } else {
+            iState.update {
+                it.copy(
+                    name = EntryTextValue(value = value)
+                )
+            }
         }
     }
 
     override fun onAuthorChange(value: String) {
-        iState.update {
-            it.copy(
-                author = EntryTextValue(value = value)
-            )
+        if (value.length < 4) {
+            iState.update {
+                it.copy(
+                    author = EntryTextValue(
+                        value = value,
+                        error = ErrorUiState(true, "can't be less 4")
+                    )
+                )
+            }
+        } else {
+            iState.update {
+                it.copy(
+                    author = EntryTextValue(value = value)
+                )
+            }
         }
     }
 
     override fun onStartDateChange(value: String) {
-        iState.update {
-            it.copy(
-                startDate = EntryTextValue(value = value)
-            )
+        if (value.isBlank() || value.isEmpty() || value == "null") {
+            onDismiss()
+        } else {
+            val newValue = DateFormatter.convert(value.toLong())
+            iState.update {
+                it.copy(
+                    startDate = EntryTextValue(value = newValue)
+                )
+            }
+            onDismiss()
         }
     }
 
     override fun onEndDateChange(value: String) {
-        iState.update {
-            it.copy(
-                endDate = EntryTextValue(value = value)
-            )
+        if (value.isBlank() || value.isEmpty() || value == "null") {
+            iState.update {
+                it.copy(
+                    endDate = EntryTextValue(
+                        value = "",
+                        error = ErrorUiState(true, "select start date first!")
+                    )
+                )
+            }
+            onDismiss()
+        } else {
+            val endDate = value.toLong()
+            val currentStart = iState.value.startDate.value
+            val startDate = if (currentStart.isBlank() || currentStart.isEmpty()) {
+                0L
+            } else {
+                DateFormatter.convert(currentStart)
+            }
+            val newValue = DateFormatter.convert(endDate)
+            if (currentStart.isBlank() || currentStart.isEmpty()) {
+                iState.update {
+                    it.copy(
+                        startDate = EntryTextValue(
+                            value = currentStart,
+                            error = ErrorUiState(true, "can't be empty!")
+                        )
+                    )
+                }
+            } else if (endDate < startDate) {
+                iState.update {
+                    it.copy(
+                        endDate = EntryTextValue(
+                            value = newValue,
+                            error = ErrorUiState(true, "can't be before start day!")
+                        )
+                    )
+                }
+            } else {
+                iState.update {
+                    it.copy(
+                        endDate = EntryTextValue(value = newValue)
+                    )
+                }
+            }
+            onDismiss()
         }
     }
 
     override fun onAmountChange(value: String) {
-        iState.update {
-            it.copy(
-                totalAmount = EntryTextValue(value = value)
-            )
+        val amount = if (value.isNotEmpty() && value.isNotBlank()) {
+            value.toInt()
+        } else {
+            0
+        }
+        if (amount < 1) {
+            iState.update {
+                it.copy(
+                    totalAmount = EntryTextValue(
+                        value = if (amount != 0) "$amount" else "",
+                        error = ErrorUiState(true, "can't be less than 1")
+                    )
+                )
+            }
+        } else {
+            iState.update {
+                it.copy(
+                    totalAmount = EntryTextValue(value = "$amount")
+                )
+            }
         }
     }
 
     override fun onFinishedChange(value: String) {
-        iState.update {
-            it.copy(
-                finishedAmount = EntryTextValue(value = value)
-            )
+        val amount = if (value.isNotEmpty() && value.isNotBlank()) {
+            value.toInt()
+        } else {
+            0
+        }
+        val currTotal = iState.value.totalAmount.value
+        val total = if (currTotal.isNotEmpty() && currTotal.isNotBlank()) {
+            currTotal.toInt()
+        } else {
+            0
+        }
+        if (amount > total) {
+            iState.update {
+                it.copy(
+                    finishedAmount = EntryTextValue(
+                        value = if (amount != 0) "$amount" else "",
+                        error = ErrorUiState(
+                            true, if (total == 0) {
+                                "total amount is missing! or incorrect!"
+                            } else {
+                                "can't be more than $total"
+                            }
+                        )
+                    )
+                )
+            }
+        } else {
+            iState.update {
+                it.copy(
+                    finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else "")
+                )
+            }
         }
     }
 
     override fun onClickSave() {
+        if (networkStateManager.isInternetAvailable()){
+            tryToExecute(
+                onError = ::onError,
+                onSuccess = ::onSuccess
+            ) {
+                iState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                val value = iState.value
+                val progress =
+                    (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
+                repository.saveNewLearningItem(
+                    LearningItem(
+                        userId = repository.getUserId(),
+                        name = value.name.value,
+                        type = value.type,
+                        author = value.author.value,
+                        startDate = value.startDate.value,
+                        endDate = value.endDate.value,
+                        notes = mutableListOf(),
+                        notesCount = 0,
+                        totalAmount = value.totalAmount.value.toInt(),
+                        finishedAmount = value.finishedAmount.value.toInt(),
+                        progress = progress,
+                    )
+                )
+            }
+        }else{
+            onError("No Internet connection!")
+        }
+    }
 
+    private fun onSuccess(result: Task<DocumentReference?>) {
+        viewModelScope.launch {
+            result
+                .addOnSuccessListener {
+                    iState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSaved = true
+                        )
+                    }
+                    sendUiEffect(NewItemScreenUiEffect.NavigateHome)
+                }
+                .addOnFailureListener {
+                    onError(it.message.toString())
+                }
+        }
     }
 
     override fun onDismiss() {
@@ -146,5 +330,16 @@ class ScreenNewItemNewModel @Inject constructor(
                 selectingEndDate = true
             )
         }
+    }
+
+    override fun isValidated(): Boolean {
+        val data = iState.value
+        return !data.error.isError &&
+                !data.name.error.isError && data.name.value.isNotEmpty() &&
+                !data.author.error.isError && data.author.value.isNotEmpty() &&
+                !data.totalAmount.error.isError && data.totalAmount.value.isNotEmpty() &&
+                !data.finishedAmount.error.isError && data.finishedAmount.value.isNotEmpty() &&
+                !data.startDate.error.isError && data.startDate.value.isNotEmpty() &&
+                !data.endDate.error.isError && data.endDate.value.isNotEmpty()
     }
 }

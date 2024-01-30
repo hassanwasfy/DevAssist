@@ -1,5 +1,6 @@
 package com.abaferas.devassist.ui.screen.item.newitem
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -22,5 +23,6 @@ fun NavGraphBuilder.addNewItemRoute() {
 }
 
 fun NavController.navigateToNewItem(typeName: String) {
-    navigate("${NavigationDestination.ScreenNewItem.route}/{$typeName}")
+    Log.e("XCV","in Route: $typeName")
+    navigate("${NavigationDestination.ScreenNewItem.route}/$typeName")
 }
