@@ -48,7 +48,11 @@ fun ScreenSplash(
             }
 
             is SplashScreenUiEffect.Home -> {
-                controller.navigateToHome()
+                controller.navigateToHome(){
+                    popUpTo(controller.graph.id){
+                        inclusive = true
+                    }
+                }
             }
             is SplashScreenUiEffect.SignUp -> {
                 controller.navigateToSignUp()

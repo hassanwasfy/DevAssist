@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abaferas.devassist.ui.theme.Tajawal
@@ -25,6 +26,9 @@ fun DevLabel(
     modifier: Modifier = Modifier,
     text: String,
     fontSize: Int = 14,
+    softWrap: Boolean = false,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     fontFamily: FontFamily = Tajawal,
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = color_textSecondaryColor,
@@ -38,6 +42,9 @@ fun DevLabel(
         color = color,
         modifier = modifier,
         textAlign = textAlign,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        overflow = overflow
     )
 }
 
@@ -45,6 +52,9 @@ fun DevLabel(
 fun DevLabelClick(
     modifier: Modifier = Modifier,
     text: String,
+    softWrap: Boolean = false,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     fontSize: Int = 14,
     fontFamily: FontFamily = Tajawal,
     fontWeight: FontWeight = FontWeight.Bold,
@@ -60,6 +70,9 @@ fun DevLabelClick(
         color = color,
         modifier = modifier.clickable { onCLick() },
         textAlign = textAlign,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        overflow = overflow
     )
 }
 
@@ -71,6 +84,9 @@ fun DevLabelWithIcon(
     text: String,
     fontSize: Int = 14,
     icon: ImageVector,
+    softWrap: Boolean = false,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     fontFamily: FontFamily = Tajawal,
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = color_textSecondaryColor,
@@ -97,6 +113,9 @@ fun DevLabelWithIcon(
             color = color,
             modifier = textModifier.padding(top = 2.dp),
             textAlign = textAlign,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 }
