@@ -1,6 +1,5 @@
 package com.abaferas.devassist.ui.screen.item.selecttype
 
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder

@@ -1,4 +1,4 @@
-package com.abaferas.devassist.domain.usecase
+package com.abaferas.devassist.domain.usecase.auth
 
 import com.abaferas.devassist.data.repository.AuthRepository
 import com.google.android.gms.tasks.Task

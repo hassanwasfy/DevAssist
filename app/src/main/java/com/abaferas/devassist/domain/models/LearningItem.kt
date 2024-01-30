@@ -8,7 +8,6 @@ data class LearningItem(
     val author: String,
     val startDate: String,
     val endDate: String,
-    val notesCount: Int,
     val totalAmount: Int,
     val finishedAmount: Int,
     val progress: Float,

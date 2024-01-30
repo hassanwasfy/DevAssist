@@ -1,7 +1,7 @@
 package com.abaferas.devassist.ui.screen.item.selecttype
 
 import androidx.lifecycle.SavedStateHandle
-import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.domain.models.LearningType
 import com.abaferas.devassist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

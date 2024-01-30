@@ -1,7 +1,7 @@
 package com.abaferas.devassist.ui.screen.home
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.domain.models.LearningType
 
 interface HomeScreenInteraction {
     fun onClickBack()

@@ -10,8 +10,6 @@ data class LearningItemDTO(
     val author: String? = "",
     val startDate: String? = "",
     val endDate: String? = "",
-    val notes: MutableList<String>? = mutableListOf(),
-    val notesCount: Int? = 0,
     val totalAmount: Int? = 0,
     val finishedAmount: Int? = 0,
     val progress: Float? = 0F,

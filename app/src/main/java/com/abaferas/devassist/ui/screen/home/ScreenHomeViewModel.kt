@@ -9,8 +9,9 @@ import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.abaferas.devassist.data.model.LearningType
-import com.abaferas.devassist.data.repository.AuthRepository
+import com.abaferas.devassist.domain.models.LearningType
+import com.abaferas.devassist.domain.usecase.auth.GetUserIdUseCase
+import com.abaferas.devassist.domain.usecase.items.GetAllUserLearningItemsUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.ErrorUiState
 import com.abaferas.devassist.ui.utils.NetworkStateManager
@@ -26,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ScreenHomeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: AuthRepository,
+    private val getUserIdUseCase: GetUserIdUseCase,
+    private val getAllUserLearningItemsUseCase: GetAllUserLearningItemsUseCase,
     private val networkStateManager: NetworkStateManager
 ) : BaseViewModel<HomeUiState, HomeScreenUiEffect>(HomeUiState()), HomeScreenInteraction {
 
@@ -40,9 +42,9 @@ class ScreenHomeViewModel @Inject constructor(
         if (networkStateManager.isInternetAvailable()) {
             try {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val list = repository.getAllLearningItems(
+                    val list = getAllUserLearningItemsUseCase(
                         async {
-                            repository.getUserId()
+                            getUserIdUseCase()
                     }.await())
 
                     list.catch {

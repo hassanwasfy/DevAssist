@@ -1,8 +1,11 @@
 package com.abaferas.devassist.ui.screen.auth.signup
 
 import androidx.lifecycle.SavedStateHandle
-import com.abaferas.devassist.data.model.UserDto
-import com.abaferas.devassist.data.repository.AuthRepository
+import com.abaferas.devassist.domain.models.User
+import com.abaferas.devassist.domain.usecase.auth.CreateAnonymousUserUseCase
+import com.abaferas.devassist.domain.usecase.auth.CreateNewUserUseCase
+import com.abaferas.devassist.domain.usecase.auth.GetUserIdUseCase
+import com.abaferas.devassist.domain.usecase.auth.InsertNewUserUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
@@ -18,7 +21,10 @@ import javax.inject.Inject
 class ScreenSignUpViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
-    private val repository: AuthRepository
+    private val getUserIdUseCase: GetUserIdUseCase,
+    private val insertNewUserUseCase: InsertNewUserUseCase,
+    private val createNewUserUseCase: CreateNewUserUseCase,
+    private val createAnonymousUserUseCase: CreateAnonymousUserUseCase,
 ) : BaseViewModel<SignUpUiState, SignUpScreenUiEffect>(SignUpUiState()), SignUpScreenInteraction {
 
     private val args: SignUpScreenArgs = SignUpScreenArgs(savedStateHandle = savedStateHandle)
@@ -190,33 +196,31 @@ class ScreenSignUpViewModel @Inject constructor(
                     isLoading = true
                 )
             }
+            val email = state.value.userEmailValue.value
+            val password = state.value.passwordValue.value
             tryToExecute(
                 onSuccess = ::onSuccess,
-                onError = ::onError
-            ) {
-                repository.creteUserWithEmailAndPassword(
-                    email = state.value.userEmailValue.value,
-                    password = state.value.passwordValue.value,
-                )
-            }
+                onError = ::onError,
+                execute = { createNewUserUseCase(email, password) }
+            )
         }
     }
 
     private fun onSuccess(result: Task<AuthResult?>) {
-        result.addOnSuccessListener { auth ->
+        result.addOnSuccessListener { _ ->
             tryToExecute(
                 onSuccess = ::onSaveUserSuccess,
-                onError = ::onSaveUserError
-            ) {
-                repository.insertNewUser(
-                    UserDto(
-                        id = auth?.user?.uid ?: "",
-                        name = iState.value.userNameValue.value,
-                        email = iState.value.userEmailValue.value,
-                        password = iState.value.passwordValue.value
+                onError = ::onSaveUserError,
+                execute = {
+                    insertNewUserUseCase(
+                        newUser = User(
+                            getUserIdUseCase(),
+                            iState.value.userNameValue.value,
+                            iState.value.userEmailValue.value
+                        )
                     )
-                )
-            }
+                }
+            )
             sendUiEffect(SignUpScreenUiEffect.NavigateToHome)
         }.addOnFailureListener { e ->
             iState.update {
@@ -265,27 +269,9 @@ class ScreenSignUpViewModel @Inject constructor(
         } else {
             tryToExecute(
                 onSuccess = ::onSuccess,
-                onError = ::onError
-            ) {
-                repository.signInAnonymous().addOnSuccessListener { auth ->
-                    tryToExecute(
-                        onSuccess = ::onSaveUserSuccess,
-                        onError = ::onSaveUserError
-                    ) {
-                        repository.insertNewUser(
-                            UserDto(
-                                id = auth?.user?.uid ?: "",
-                                name = iState.value.userNameValue.value,
-                                email = iState.value.userEmailValue.value,
-                                password = iState.value.passwordValue.value
-                            )
-                        )
-                    }
-                    sendUiEffect(SignUpScreenUiEffect.NavigateToHome)
-                }.addOnFailureListener {
-                    onError(it.message.toString())
-                }
-            }
+                onError = ::onError,
+                execute = { createAnonymousUserUseCase() }
+            )
         }
     }
 

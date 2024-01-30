@@ -1,8 +1,8 @@
 package com.abaferas.devassist.data.repository
 
 import com.abaferas.devassist.data.Constants
-import com.abaferas.devassist.data.model.UserDto
 import com.abaferas.devassist.data.utils.wrapRequest
+import com.abaferas.devassist.domain.models.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -37,8 +37,8 @@ class AuthRepositoryImpl @Inject constructor(
         return wrapRequest { firebaseAuth.currentUser }
     }
 
-    override suspend fun insertNewUser(userDto: UserDto): Task<DocumentReference?> {
-        return wrapRequest { firestore.collection(Constants.collectionUSERS).add(userDto) }
+    override suspend fun insertNewUser(user: User): Task<DocumentReference?> {
+        return wrapRequest { firestore.collection(Constants.collectionUSERS).add(user) }
     }
 
     override suspend fun getUserId(): String {

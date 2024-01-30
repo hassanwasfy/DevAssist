@@ -1,7 +1,7 @@
 package com.abaferas.devassist.ui.screen.auth.login
 
 import androidx.lifecycle.SavedStateHandle
-import com.abaferas.devassist.data.repository.AuthRepository
+import com.abaferas.devassist.domain.usecase.auth.LogInUserUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class ScreenLoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
-    private val repository: AuthRepository
+    private val logInUserUseCase: LogInUserUseCase
 ) : BaseViewModel<LoginUiState, LoginScreenUiEffect>(LoginUiState()), LoginScreenInteraction {
 
     private val args: LoginScreenArgs = LoginScreenArgs(savedStateHandle = savedStateHandle)
@@ -123,15 +123,13 @@ class ScreenLoginViewModel @Inject constructor(
                     isLoading = true
                 )
             }
+            val email = state.value.userEmailValue.value
+            val password = state.value.passwordValue.value
             tryToExecute(
                 onSuccess = ::onSuccess,
-                onError = ::onError
-            ) {
-                repository.logInWithEmailAndPassword(
-                    email = state.value.userEmailValue.value,
-                    password = state.value.passwordValue.value,
-                )
-            }
+                onError = ::onError,
+                execute = {logInUserUseCase(email, password)}
+            )
         }
     }
 

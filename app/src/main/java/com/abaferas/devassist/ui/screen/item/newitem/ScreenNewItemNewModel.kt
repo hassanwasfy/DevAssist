@@ -7,9 +7,10 @@ import androidx.compose.material.icons.outlined.OndemandVideo
 import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.abaferas.devassist.data.model.LearningItem
-import com.abaferas.devassist.data.model.LearningType
 import com.abaferas.devassist.data.repository.AuthRepository
+import com.abaferas.devassist.domain.models.LearningItem
+import com.abaferas.devassist.domain.models.LearningType
+import com.abaferas.devassist.domain.usecase.items.SaveNewItemUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
@@ -22,12 +23,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class ScreenNewItemNewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val networkStateManager: NetworkStateManager,
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val saveNewItemUseCase: SaveNewItemUseCase
 ) : BaseViewModel<NewItemUiState, NewItemScreenUiEffect>(NewItemUiState()),
     NewItemScreenInteraction {
 
@@ -50,6 +53,7 @@ class ScreenNewItemNewModel @Inject constructor(
                         )
                     }
                 }
+
                 "Azkar" -> {
                     iState.update {
                         it.copy(
@@ -59,6 +63,7 @@ class ScreenNewItemNewModel @Inject constructor(
                         )
                     }
                 }
+
                 "Course" -> {
                     iState.update {
                         it.copy(
@@ -68,6 +73,7 @@ class ScreenNewItemNewModel @Inject constructor(
                         )
                     }
                 }
+
                 "Video" -> {
                     iState.update {
                         it.copy(
@@ -255,36 +261,36 @@ class ScreenNewItemNewModel @Inject constructor(
     }
 
     override fun onClickSave() {
-        if (networkStateManager.isInternetAvailable()){
+        if (networkStateManager.isInternetAvailable()) {
             tryToExecute(
                 onError = ::onError,
-                onSuccess = ::onSuccess
-            ) {
-                iState.update {
-                    it.copy(
-                        isLoading = true
+                onSuccess = ::onSuccess,
+                execute = {
+                    iState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                    val value = iState.value
+                    val progress =
+                        (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
+                    saveNewItemUseCase(
+                        LearningItem(
+                            itemId = Random.nextLong().toString(),
+                            userId = repository.getUserId(),
+                            name = value.name.value,
+                            type = value.type,
+                            author = value.author.value,
+                            startDate = value.startDate.value,
+                            endDate = value.endDate.value,
+                            totalAmount = value.totalAmount.value.toInt(),
+                            finishedAmount = value.finishedAmount.value.toInt(),
+                            progress = progress,
+                        )
                     )
                 }
-                val value = iState.value
-                val progress =
-                    (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
-                repository.saveNewLearningItem(
-                    LearningItem(
-                        userId = repository.getUserId(),
-                        name = value.name.value,
-                        type = value.type,
-                        author = value.author.value,
-                        startDate = value.startDate.value,
-                        endDate = value.endDate.value,
-                        notes = mutableListOf(),
-                        notesCount = 0,
-                        totalAmount = value.totalAmount.value.toInt(),
-                        finishedAmount = value.finishedAmount.value.toInt(),
-                        progress = progress,
-                    )
-                )
-            }
-        }else{
+            )
+        } else {
             onError("No Internet connection!")
         }
     }

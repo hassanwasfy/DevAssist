@@ -3,7 +3,7 @@ package com.abaferas.devassist.ui.screen.item.newitem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddReaction
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.domain.models.LearningType
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState

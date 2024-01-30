@@ -1,7 +1,7 @@
 package com.abaferas.devassist.ui.screen.item.edititem
 
 
-import com.abaferas.devassist.data.model.LearningType
+import com.abaferas.devassist.domain.models.LearningType
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState

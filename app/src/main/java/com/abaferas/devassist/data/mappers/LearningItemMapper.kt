@@ -13,9 +13,23 @@ fun LearningItemDTO.toDomainModel(): LearningItem {
         author = this.author ?: "",
         startDate = this.startDate ?: "",
         endDate = this.endDate ?: "",
-        notesCount = this.notesCount ?: 0,
         totalAmount = this.totalAmount ?: 0,
         finishedAmount = this.finishedAmount ?: 0,
         progress = this.progress ?: 0F,
+    )
+}
+
+fun LearningItem.toDtoModel(): LearningItemDTO {
+    return LearningItemDTO(
+        itemId = this.itemId,
+        userId = this.userId,
+        name = this.name,
+        type = this.type,
+        author = this.author,
+        startDate = this.startDate,
+        endDate = this.endDate,
+        totalAmount = this.totalAmount,
+        finishedAmount = this.finishedAmount,
+        progress = this.progress,
     )
 }

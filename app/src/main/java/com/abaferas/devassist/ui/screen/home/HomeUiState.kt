@@ -1,6 +1,6 @@
 package com.abaferas.devassist.ui.screen.home
 
-import com.abaferas.devassist.data.model.LearningItem
+import com.abaferas.devassist.domain.models.LearningItem
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.ErrorUiState
 
