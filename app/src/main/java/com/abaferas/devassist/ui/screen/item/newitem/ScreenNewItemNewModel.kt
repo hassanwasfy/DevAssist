@@ -14,6 +14,7 @@ import com.abaferas.devassist.domain.usecase.items.SaveNewItemUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
+import com.abaferas.devassist.ui.screen.item.edititem.EditItemUiState
 import com.abaferas.devassist.ui.screen.item.newitem.NewItemScreenArgs.Companion.TYPE_NAME
 import com.abaferas.devassist.ui.utils.DateFormatter
 import com.abaferas.devassist.ui.utils.NetworkStateManager
@@ -342,15 +343,29 @@ class ScreenNewItemNewModel @Inject constructor(
 
     override fun isValidated(): Boolean {
         val data = iState.value
+        return validateErrors(data) && validateInputs(data)
+    }
+
+    private fun validateErrors(data: NewItemUiState): Boolean {
+        return !data.error.isError &&
+                !data.name.error.isError &&
+                !data.author.error.isError &&
+                !data.totalAmount.error.isError &&
+                !data.finishedAmount.error.isError &&
+                !data.startDate.error.isError &&
+                !data.endDate.error.isError
+    }
+
+    private fun validateInputs(data: NewItemUiState): Boolean {
         val start = DateFormatter.convert(data.startDate.value)
         val end = DateFormatter.convert(data.endDate.value)
-        return !data.error.isError &&
-                !data.name.error.isError && data.name.value.isNotEmpty() &&
-                !data.author.error.isError && data.author.value.isNotEmpty() &&
-                !data.totalAmount.error.isError && data.totalAmount.value.isNotEmpty() &&
-                !data.finishedAmount.error.isError && data.finishedAmount.value.isNotEmpty() &&
-                !data.startDate.error.isError && data.startDate.value.isNotEmpty() &&
-                !data.endDate.error.isError && data.endDate.value.isNotEmpty() &&
-                data.finishedAmount.value <= data.totalAmount.value && start <= end
+        return data.name.value.isNotEmpty() &&
+                data.author.value.isNotEmpty() &&
+                data.totalAmount.value.isNotEmpty() &&
+                data.finishedAmount.value.isNotEmpty() &&
+                data.startDate.value.isNotEmpty() &&
+                data.endDate.value.isNotEmpty() &&
+                data.finishedAmount.value <= data.totalAmount.value &&
+                start <= end
     }
 }

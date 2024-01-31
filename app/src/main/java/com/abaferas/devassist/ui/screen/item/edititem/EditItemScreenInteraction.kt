@@ -8,7 +8,6 @@ interface EditItemScreenInteraction {
     fun onEndDateChange(value: String)
     fun onAmountChange(value: String)
     fun onFinishedChange(value: String)
-    fun onProgressChange(value: String)
     fun onClickEdit()
     fun onClickDelete()
     fun onDismiss()

@@ -10,6 +10,8 @@ import com.abaferas.devassist.domain.usecase.items.GetItemByIdUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
+import com.abaferas.devassist.ui.mappers.toDomain
+import com.abaferas.devassist.ui.utils.Constants
 import com.abaferas.devassist.ui.utils.DateFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -26,9 +28,6 @@ class ScreenEditItemViewModel @Inject constructor(
     EditItemScreenInteraction {
 
     init {
-        val id = savedStateHandle[EditItemScreenArgs.ITEM_ID] ?: ""
-        Log.w("XCV", "in VM: $id")
-
         getData()
     }
 
@@ -74,7 +73,7 @@ class ScreenEditItemViewModel @Inject constructor(
     }
 
     override fun onNameChange(value: String) {
-        if (value.length < 4) {
+        if (value.length < Constants.NAME_LENGTH) {
             iState.update {
                 it.copy(
                     name = EntryTextValue(
@@ -93,7 +92,7 @@ class ScreenEditItemViewModel @Inject constructor(
     }
 
     override fun onAuthorChange(value: String) {
-        if (value.length < 4) {
+        if (value.length < Constants.NAME_LENGTH) {
             iState.update {
                 it.copy(
                     author = EntryTextValue(
@@ -234,13 +233,28 @@ class ScreenEditItemViewModel @Inject constructor(
         }
     }
 
-
-    override fun onProgressChange(value: String) {
-
-    }
-
     override fun onClickEdit() {
-
+        tryToExecute(
+            onError = { msg ->
+                iState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = ErrorUiState(true, msg)
+                    )
+                }
+            },
+            onSuccess = {
+                it.addOnSuccessListener {
+                    sendUiEffect(EditItemScreenUiEffect.Home)
+                }.addOnFailureListener { e ->
+                    onError(e.message.toString())
+                }
+            },
+            execute = {
+                val item = iState.value
+                editItemUseCase(item.toDomain())
+            }
+        )
     }
 
     override fun onClickDelete() {
@@ -262,20 +276,7 @@ class ScreenEditItemViewModel @Inject constructor(
             },
             execute = {
                 val item = iState.value
-                deleteItemUseCase(
-                    LearningItem(
-                        itemId = item.itemId,
-                        userId = item.userId,
-                        name = item.name.value,
-                        type = item.type,
-                        author = item.author.value,
-                        startDate = item.startDate.value,
-                        endDate = item.endDate.value,
-                        totalAmount = item.totalAmount.value.toInt(),
-                        finishedAmount = item.finishedAmount.value.toInt(),
-                        progress = item.progress.value.toFloat(),
-                    )
-                )
+                deleteItemUseCase(item.toDomain())
             }
         )
     }
@@ -307,16 +308,30 @@ class ScreenEditItemViewModel @Inject constructor(
 
     override fun isValidated(): Boolean {
         val data = iState.value
+        return validateErrors(data) && validateInputs(data)
+    }
+
+    private fun validateErrors(data: EditItemUiState): Boolean {
+        return !data.error.isError &&
+                !data.name.error.isError &&
+                !data.author.error.isError &&
+                !data.totalAmount.error.isError &&
+                !data.finishedAmount.error.isError &&
+                !data.startDate.error.isError &&
+                !data.endDate.error.isError
+    }
+
+    private fun validateInputs(data: EditItemUiState): Boolean {
         val start = DateFormatter.convert(data.startDate.value)
         val end = DateFormatter.convert(data.endDate.value)
-        return !data.error.isError &&
-                !data.name.error.isError && data.name.value.isNotEmpty() &&
-                !data.author.error.isError && data.author.value.isNotEmpty() &&
-                !data.totalAmount.error.isError && data.totalAmount.value.isNotEmpty() &&
-                !data.finishedAmount.error.isError && data.finishedAmount.value.isNotEmpty() &&
-                !data.startDate.error.isError && data.startDate.value.isNotEmpty() &&
-                !data.endDate.error.isError && data.endDate.value.isNotEmpty() &&
-                data.finishedAmount.value <= data.totalAmount.value && start <= end
+        return data.name.value.isNotEmpty() &&
+                data.author.value.isNotEmpty() &&
+                data.totalAmount.value.isNotEmpty() &&
+                data.finishedAmount.value.isNotEmpty() &&
+                data.startDate.value.isNotEmpty() &&
+                data.endDate.value.isNotEmpty() &&
+                data.finishedAmount.value <= data.totalAmount.value &&
+                start <= end
     }
 
     override fun onRetry() {
