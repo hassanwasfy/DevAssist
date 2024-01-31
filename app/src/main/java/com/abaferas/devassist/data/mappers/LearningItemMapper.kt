@@ -1,6 +1,6 @@
 package com.abaferas.devassist.data.mappers
 
-import com.abaferas.devassist.data.model.LearningItemDTO
+import com.abaferas.devassist.data.model.learning.LearningItemDTO
 import com.abaferas.devassist.domain.models.LearningItem
 import com.abaferas.devassist.domain.models.LearningType
 

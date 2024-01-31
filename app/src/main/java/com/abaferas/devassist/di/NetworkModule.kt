@@ -1,11 +1,6 @@
 package com.abaferas.devassist.di
 
-import com.abaferas.devassist.data.service.ApiService
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.abaferas.devassist.data.service.BooksService
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -22,29 +17,28 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val TIMEOUT = 30L
+    private const val TIMEOUT = 5L
 
     @Singleton
     @Provides
     fun provideApiService(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): ApiService {
-        return provideRetrofit(
+    ): BooksService {
+        return provideBooksRetrofit(
             client = okHttpClient,
             gsonConverterFactory = gsonConverterFactory
-        ).create(ApiService::class.java)
+        ).create(BooksService::class.java)
     }
 
 
-    @Singleton
     @Provides
-    fun provideRetrofit(
+    fun provideBooksRetrofit(
         client: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://api.itbook.store/1.0/")
             .client(client)
             .addConverterFactory(gsonConverterFactory)
             .build()

@@ -2,6 +2,8 @@ package com.abaferas.devassist.di
 
 import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.data.repository.AuthRepositoryImpl
+import com.abaferas.devassist.data.repository.BooksRepository
+import com.abaferas.devassist.data.repository.BooksRepositoryImpl
 import com.abaferas.devassist.data.repository.LearningItemsRepository
 import com.abaferas.devassist.data.repository.LearningItemsRepositoryImpl
 import dagger.Binds
@@ -23,5 +25,8 @@ abstract class RepositoryModule {
     @Binds
     abstract fun provideItemsRepository(learningItemsRepositoryImpl: LearningItemsRepositoryImpl): LearningItemsRepository
 
+    @Singleton
+    @Binds
+    abstract fun provideBooksRepository(booksRepositoryImpl: BooksRepositoryImpl): BooksRepository
 
 }

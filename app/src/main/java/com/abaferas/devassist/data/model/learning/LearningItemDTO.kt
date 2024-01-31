@@ -1,4 +1,4 @@
-package com.abaferas.devassist.data.model
+package com.abaferas.devassist.data.model.learning
 
 import com.abaferas.devassist.domain.models.LearningType
 
