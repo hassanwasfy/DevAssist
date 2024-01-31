@@ -1,10 +1,15 @@
 package com.abaferas.devassist.ui.screen.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,15 +29,20 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLabelWithIcon
@@ -50,13 +60,14 @@ import com.abaferas.devassist.ui.theme.color_dividerColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
 import com.abaferas.devassist.ui.theme.color_textSecondaryColor
+import kotlinx.coroutines.delay
 
 
 @Composable
 fun ScreenHome(
     screenHomeViewModel: ScreenHomeViewModel = hiltViewModel()
 ) {
-    val state = screenHomeViewModel.state.collectAsState().value
+    val state = screenHomeViewModel.state.collectAsStateWithLifecycle().value
     ScreenHomeContent(state = state, interaction = screenHomeViewModel)
     NavigationHandler(effects = screenHomeViewModel.effect) { effect, controller ->
         when (effect) {
@@ -69,6 +80,7 @@ fun ScreenHome(
             }
 
             is HomeScreenUiEffect.EditCurrentItem -> {
+                Log.w("XCV","in home handler: ${effect.itemId}")
                 controller.navigateToEditItem(effect.itemId)
             }
         }
@@ -116,6 +128,7 @@ fun ScreenHomeContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(state.items) {
+                    Log.w("XCV","in home list: ${it.itemId}")
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = Color.Transparent
@@ -178,20 +191,35 @@ fun ScreenHomeContent(
                                         iconModifier = Modifier.padding(end = 4.dp)
                                     )
                                 }
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(0.5f),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.65f)
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
 
                                 ) {
+                                    val progress = remember {
+                                       Animatable(0f)
+                                    }
+                                    LaunchedEffect(key1 = it.progress){
+                                        progress.animateTo(
+                                            targetValue = it.progress,
+                                            animationSpec = spring(
+                                                Spring.DampingRatioHighBouncy,
+                                                Spring.StiffnessMediumLow
+                                            ),
+                                            initialVelocity = 0.6f
+                                        )
+                                    }
                                     CircularProgressIndicator(
-                                        modifier = Modifier,
-                                        progress = { it.progress },
+                                        modifier = Modifier.fillMaxSize(),
+                                        progress = { progress.value },
                                         color = color_darkPrimaryColor,
                                         trackColor = color_dividerColor,
                                         strokeCap = StrokeCap.Round,
                                         strokeWidth = 6.dp
                                     )
+                                    DevFormattedLabel(value = progress.value)
                                 }
                             }
                         }
@@ -223,4 +251,17 @@ fun ScreenHomeContent(
             }
         }
     }
+}
+
+@Composable
+fun DevFormattedLabel(value: Float) {
+    val formattedPercentage = remember(value) {
+        AnnotatedString.Builder().apply {
+            append("${(value * 100).toInt()}%")
+        }.toAnnotatedString()
+    }
+
+    DevLabel(text = formattedPercentage.text, modifier = Modifier.padding(top = 16.dp), fontSize = 20,
+        fontWeight = FontWeight.ExtraBold,
+        color = color_darkPrimaryColor)
 }

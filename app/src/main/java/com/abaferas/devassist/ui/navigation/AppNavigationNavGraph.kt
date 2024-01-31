@@ -28,18 +28,12 @@ fun AppNavigationNavGraph() {
         startDestination = NavigationDestination.ScreenSplash.route,
         enterTransition = {
             fadeIn(
-                animationSpec = tween(300),
-                ) + slideIntoContainer(
                 animationSpec = tween(300, easing = EaseIn),
-                towards = SlideDirection.Start
-            )
+                )
         },
         exitTransition = {
             fadeOut(
-                animationSpec = tween(300),
-            ) + slideOutOfContainer(
                 animationSpec = tween(300, easing = EaseOut),
-                towards = SlideDirection.End
             )
         },
     ) {

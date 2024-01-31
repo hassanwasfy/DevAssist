@@ -26,5 +26,7 @@ suspend fun <T> wrapRequest(
         throw e
     }catch (e: FirebaseException){
         throw e
+    }catch (e: NoSuchElementException){
+        throw e
     }
 }

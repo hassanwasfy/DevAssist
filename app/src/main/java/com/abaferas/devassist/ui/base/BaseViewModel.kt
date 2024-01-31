@@ -39,11 +39,11 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState):Vi
                     val result = execute()
                     onSuccess(result)
                 }
-            } catch (e: Exception) {
-                onError(e.message.toString())
-            } catch (e: DevAssistException.NoInternetConnection){
+            }catch (e: DevAssistException.NoInternetConnection){
                 onError(e.message.toString())
             }catch (e: TimeoutCancellationException){
+                onError(e.message.toString())
+            }catch (e: NoSuchElementException){
                 onError(e.message.toString())
             }
         }

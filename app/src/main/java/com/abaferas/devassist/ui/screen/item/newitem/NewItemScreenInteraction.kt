@@ -13,5 +13,6 @@ interface NewItemScreenInteraction {
     fun onOpenStartDialog()
     fun onOpenEndDialog()
     fun isValidated(): Boolean
+    fun onRetry()
 
 }

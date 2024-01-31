@@ -34,9 +34,11 @@ class ScreenNewItemNewModel @Inject constructor(
 ) : BaseViewModel<NewItemUiState, NewItemScreenUiEffect>(NewItemUiState()),
     NewItemScreenInteraction {
 
-    private val args: NewItemScreenArgs = NewItemScreenArgs(savedStateHandle = savedStateHandle)
-
     init {
+        getData()
+    }
+
+    override fun onRetry() {
         getData()
     }
 
@@ -340,12 +342,15 @@ class ScreenNewItemNewModel @Inject constructor(
 
     override fun isValidated(): Boolean {
         val data = iState.value
+        val start = DateFormatter.convert(data.startDate.value)
+        val end = DateFormatter.convert(data.endDate.value)
         return !data.error.isError &&
                 !data.name.error.isError && data.name.value.isNotEmpty() &&
                 !data.author.error.isError && data.author.value.isNotEmpty() &&
                 !data.totalAmount.error.isError && data.totalAmount.value.isNotEmpty() &&
                 !data.finishedAmount.error.isError && data.finishedAmount.value.isNotEmpty() &&
                 !data.startDate.error.isError && data.startDate.value.isNotEmpty() &&
-                !data.endDate.error.isError && data.endDate.value.isNotEmpty()
+                !data.endDate.error.isError && data.endDate.value.isNotEmpty() &&
+                data.finishedAmount.value <= data.totalAmount.value && start <= end
     }
 }

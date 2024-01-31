@@ -30,7 +30,7 @@ class ScreenHomeViewModel @Inject constructor(
     private val getUserIdUseCase: GetUserIdUseCase,
     private val getAllUserLearningItemsUseCase: GetAllUserLearningItemsUseCase,
     private val networkStateManager: NetworkStateManager
-) : BaseViewModel<HomeUiState, HomeScreenUiEffect>(HomeUiState()), HomeScreenInteraction {
+): BaseViewModel<HomeUiState, HomeScreenUiEffect>(HomeUiState()), HomeScreenInteraction {
 
     private val args: HomeScreenArgs = HomeScreenArgs(savedStateHandle = savedStateHandle)
 
@@ -82,8 +82,8 @@ class ScreenHomeViewModel @Inject constructor(
 
     private fun onSuccess(result: FirebaseUser?) {
         result?.let {
-            iState.update { st ->
-                st.copy(
+            iState.update { homeState ->
+                homeState.copy(
                     isLoading = false,
                     userName = it.displayName ?: "No Name!"
                 )
@@ -105,7 +105,6 @@ class ScreenHomeViewModel @Inject constructor(
     }
 
     override fun onClickRetry() {
-        Log.i("XCV", "Retry clicked")
         iState.update { HomeUiState() }
         getData()
     }

@@ -6,11 +6,14 @@ interface EditItemScreenInteraction {
     fun onAuthorChange(value: String)
     fun onStartDateChange(value: String)
     fun onEndDateChange(value: String)
-    fun onTypeChange(value: String)
     fun onAmountChange(value: String)
     fun onFinishedChange(value: String)
     fun onProgressChange(value: String)
-    fun onClickSave()
     fun onClickEdit()
     fun onClickDelete()
+    fun onDismiss()
+    fun onOpenStartDialog()
+    fun onOpenEndDialog()
+    fun isValidated(): Boolean
+    fun onRetry()
 }

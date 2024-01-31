@@ -1,6 +1,9 @@
 package com.abaferas.devassist.ui.screen.item.edititem
 
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddReaction
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.abaferas.devassist.domain.models.LearningType
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.EntryTextValue
@@ -22,4 +25,8 @@ data class EditItemUiState(
     val totalAmount: EntryTextValue = EntryTextValue(),
     val finishedAmount: EntryTextValue = EntryTextValue(),
     val progress: EntryTextValue = EntryTextValue(),
+    val isSaved: Boolean = false,
+    val selectingStartDate: Boolean = false,
+    val selectingEndDate: Boolean = false,
+    val typeIcon: ImageVector = Icons.Outlined.AddReaction,
 ) : BaseUiState

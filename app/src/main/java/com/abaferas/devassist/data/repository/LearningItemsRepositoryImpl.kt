@@ -9,11 +9,13 @@ import com.abaferas.devassist.domain.models.LearningItem
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class LearningItemsRepositoryImpl @Inject constructor(
@@ -42,6 +44,16 @@ class LearningItemsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getItemById(itemId: String): LearningItem {
+        return wrapRequest {
+            firestore.collection(Constants.collectionLEARNINGITEMS)
+                .whereEqualTo("itemId", itemId)
+                .get()
+        }.await().toObjects(LearningItemDTO::class.java).find {
+            it.itemId == itemId
+        }?.toDomainModel() ?: throw NoSuchElementException("Item not found!")
+    }
+
     override suspend fun getAllLearningItems(userId: String): Flow<List<LearningItem>> =
         callbackFlow {
             val registration = firestore.collection(Constants.collectionLEARNINGITEMS)
@@ -61,4 +73,5 @@ class LearningItemsRepositoryImpl @Inject constructor(
                 registration.remove()
             }
         }.flowOn(Dispatchers.IO)
+
 }

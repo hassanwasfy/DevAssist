@@ -1,6 +1,7 @@
 package com.abaferas.devassist.ui.screen.item.edititem
 
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -23,5 +24,5 @@ fun NavGraphBuilder.addEditItemRoute() {
 }
 
 fun NavController.navigateToEditItem(itemId: String) {
-    navigate("${NavigationDestination.ScreenEditItem.route}/{$itemId}")
+    navigate("${NavigationDestination.ScreenEditItem.route}/$itemId")
 }
