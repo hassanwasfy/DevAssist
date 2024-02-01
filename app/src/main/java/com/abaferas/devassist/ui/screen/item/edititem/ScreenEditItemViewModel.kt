@@ -183,7 +183,7 @@ class ScreenEditItemViewModel @Inject constructor(
     }
 
     override fun onAmountChange(value: String) {
-        try{
+        try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
                 value.toFloat()
             } else {
@@ -207,12 +207,12 @@ class ScreenEditItemViewModel @Inject constructor(
                     )
                 }
             }
-        }catch (e: java.lang.NumberFormatException){
+        } catch (e: java.lang.NumberFormatException) {
             iState.update {
                 it.copy(
                     totalAmount = EntryTextValue(
                         it.totalAmount.value,
-                        ErrorUiState(true,"can't have two floating point")
+                        ErrorUiState(true, "can't have two floating point")
                     )
                 )
             }
@@ -220,7 +220,7 @@ class ScreenEditItemViewModel @Inject constructor(
     }
 
     override fun onFinishedChange(value: String) {
-        try{
+        try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
                 value.toFloat()
             } else {
@@ -256,12 +256,12 @@ class ScreenEditItemViewModel @Inject constructor(
                     )
                 }
             }
-        }catch (e: java.lang.NumberFormatException){
+        } catch (e: java.lang.NumberFormatException) {
             iState.update {
                 it.copy(
                     finishedAmount = EntryTextValue(
                         it.finishedAmount.value,
-                        ErrorUiState(true,e.message.toString())
+                        ErrorUiState(true, e.message.toString())
                     )
                 )
             }
