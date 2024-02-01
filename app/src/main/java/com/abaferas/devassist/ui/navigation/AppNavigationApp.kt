@@ -61,7 +61,7 @@ fun AppNavigationApp() {
         ) {
             val sys = rememberSystemUiController()
             sys.setStatusBarColor(color_darkPrimaryColor)
-            sys.setNavigationBarColor(color_primaryColor, darkIcons = false)
+            sys.setNavigationBarColor(color_darkPrimaryColor, darkIcons = false)
             AppNavigationNavGraph()
         }
     }

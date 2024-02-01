@@ -2,6 +2,9 @@ package com.abaferas.devassist.ui.composable
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.Spring
@@ -67,6 +70,11 @@ fun DevScaffold(
                 tween(Constants.ANIMATION_DURATION, easing = EaseOut)
             )
         ) {
+
+        }
+        DevAnimatedVisibility(
+            visible = isLoading,
+        ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -75,15 +83,7 @@ fun DevScaffold(
                 loading()
             }
         }
-        AnimatedVisibility(
-            visible = isError,
-            enter = fadeIn(
-                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
-            ),
-            exit = fadeOut(
-                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
-            )
-        ) {
+        DevAnimatedVisibility(visible = !isError) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -92,16 +92,9 @@ fun DevScaffold(
                 error()
             }
         }
-        AnimatedVisibility(
+        DevAnimatedVisibility(
             visible = !isError && !isLoading,
-            enter = fadeIn(
-                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
-            ),
-            exit = fadeOut(
-                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
-            )
-        ) {
-            content()
-        }
+            content = content
+        )
     }
 }

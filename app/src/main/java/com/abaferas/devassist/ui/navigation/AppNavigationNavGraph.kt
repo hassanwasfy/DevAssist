@@ -16,7 +16,7 @@ import com.abaferas.devassist.ui.screen.home.addHomeRoute
 import com.abaferas.devassist.ui.screen.item.edititem.addEditItemRoute
 import com.abaferas.devassist.ui.screen.item.newitem.addNewItemRoute
 import com.abaferas.devassist.ui.screen.item.selecttype.addSelectTypeRoute
-import com.abaferas.devassist.ui.screen.profile.addProfileRoute
+import com.abaferas.devassist.ui.screen.profile.addJobRoute
 import com.abaferas.devassist.ui.screen.settings.addSettingsRoute
 import com.abaferas.devassist.ui.screen.splash.addSplashRoute
 import com.abaferas.devassist.ui.utils.Constants
@@ -43,7 +43,7 @@ fun AppNavigationNavGraph() {
         addHomeRoute()
         addSettingsRoute()
         addAiChatRoute()
-        addProfileRoute()
+        addJobRoute()
         addBookRoute()
         addNewItemRoute()
         addEditItemRoute()

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MenuBook
@@ -30,10 +31,11 @@ import com.abaferas.devassist.ui.navigation.NavigationDestination
 import com.abaferas.devassist.ui.screen.ai.navigateToAiChat
 import com.abaferas.devassist.ui.screen.books.newbooks.navigateToBook
 import com.abaferas.devassist.ui.screen.home.navigateToHome
-import com.abaferas.devassist.ui.screen.profile.navigateToProfile
+import com.abaferas.devassist.ui.screen.profile.navigateToJob
 import com.abaferas.devassist.ui.screen.settings.navigateToSettings
 import com.abaferas.devassist.ui.theme.Tajawal
-import com.abaferas.devassist.ui.theme.color_dividerColor
+import com.abaferas.devassist.ui.theme.color_backgroundColor
+import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_primaryColor
 
@@ -47,15 +49,15 @@ fun DevBottomBar() {
         currentScreen != NavigationDestination.ScreenSignUp.route
     ) {
         BottomAppBar(
-            containerColor = color_primaryColor,
+            containerColor = color_darkPrimaryColor,
             tonalElevation = 12.dp,
         ) {
             AddDevBottomItem(
-                icon = Icons.Outlined.AccountCircle, label = R.string.bottom_Profile,
-                isCurrent = currentScreen == NavigationDestination.ScreenProfile.route
+                icon = Icons.Outlined.Badge, label = R.string.bottom_job,
+                isCurrent = currentScreen == NavigationDestination.ScreenJob.route
             ) {
-                if (currentScreen != NavigationDestination.ScreenProfile.route) {
-                    controller.navigateToProfile()
+                if (currentScreen != NavigationDestination.ScreenJob.route) {
+                    controller.navigateToJob()
                 }
             }
             AddDevBottomItem(
@@ -106,7 +108,7 @@ fun RowScope.AddDevBottomItem(
         if (isCurrent)
             color_lightPrimaryColor
         else
-            color_dividerColor,
+            color_backgroundColor,
         label = "",
         animationSpec = tween(
             durationMillis = 300
