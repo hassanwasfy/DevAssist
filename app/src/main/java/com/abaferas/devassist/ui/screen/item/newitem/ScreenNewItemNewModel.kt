@@ -205,60 +205,82 @@ class ScreenNewItemNewModel @Inject constructor(
     }
 
     override fun onAmountChange(value: String) {
-        val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-            value.toInt()
-        } else {
-            0
-        }
-        if (amount < 1) {
+        try {
+            val amount = if (value.isNotEmpty() && value.isNotBlank()) {
+                value.toFloat()
+            } else {
+                0F
+            }
+            if (amount < 1F) {
+                iState.update {
+                    it.copy(
+                        totalAmount = EntryTextValue(
+                            value = if (amount != 0F) "$amount" else "",
+                            error = ErrorUiState(true, "can't be less than 1")
+                        )
+                    )
+                }
+            } else {
+                iState.update {
+                    it.copy(
+                        totalAmount = EntryTextValue(value = "$amount")
+                    )
+                }
+            }
+        }catch (e: NumberFormatException){
             iState.update {
                 it.copy(
                     totalAmount = EntryTextValue(
-                        value = if (amount != 0) "$amount" else "",
-                        error = ErrorUiState(true, "can't be less than 1")
+                        it.totalAmount.value,
+                        ErrorUiState(true,"can't have two floating point")
                     )
-                )
-            }
-        } else {
-            iState.update {
-                it.copy(
-                    totalAmount = EntryTextValue(value = "$amount")
                 )
             }
         }
     }
 
     override fun onFinishedChange(value: String) {
-        val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-            value.toInt()
-        } else {
-            0
-        }
-        val currTotal = iState.value.totalAmount.value
-        val total = if (currTotal.isNotEmpty() && currTotal.isNotBlank()) {
-            currTotal.toInt()
-        } else {
-            0
-        }
-        if (amount > total) {
+        try {
+            val amount = if (value.isNotEmpty() && value.isNotBlank()) {
+                value.toFloat()
+            } else {
+                0F
+            }
+            val currTotal = iState.value.totalAmount.value
+            val total = if (currTotal.isNotEmpty() && currTotal.isNotBlank()) {
+                currTotal.toFloat()
+            } else {
+                0F
+            }
+            if (amount > total) {
+                iState.update {
+                    it.copy(
+                        finishedAmount = EntryTextValue(
+                            value = if (amount != 0F) "$amount" else "",
+                            error = ErrorUiState(
+                                true, if (total == 0F) {
+                                    "total amount is missing! or incorrect!"
+                                } else {
+                                    "can't be more than $total"
+                                }
+                            )
+                        )
+                    )
+                }
+            } else {
+                iState.update {
+                    it.copy(
+                        finishedAmount = EntryTextValue(value = if (amount != 0F) "$amount" else "")
+                    )
+                }
+            }
+        }catch (e: NumberFormatException){
             iState.update {
                 it.copy(
                     finishedAmount = EntryTextValue(
-                        value = if (amount != 0) "$amount" else "",
-                        error = ErrorUiState(
-                            true, if (total == 0) {
-                                "total amount is missing! or incorrect!"
-                            } else {
-                                "can't be more than $total"
-                            }
-                        )
+                        it.finishedAmount.value,
+                        ErrorUiState(true,"can't have two floating point")
                     )
-                )
-            }
-        } else {
-            iState.update {
-                it.copy(
-                    finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else "")
                 )
             }
         }
