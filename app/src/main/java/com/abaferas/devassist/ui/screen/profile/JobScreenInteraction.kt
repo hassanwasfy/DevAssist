@@ -1,5 +1,5 @@
 package com.abaferas.devassist.ui.screen.profile
 
-interface ProfileScreenInteraction {
+interface JobScreenInteraction {
     fun onClickBack()
 }

@@ -1,5 +1,6 @@
 package com.abaferas.devassist.ui.screen.settings
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevScaffold
+import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 
 
@@ -35,8 +37,13 @@ fun ScreenSettingsContent(
         isLoading = state.isLoading,
         isError = state.error.isError,
         errorMsg = state.error.message,
-        onRetry = {}
+        isInternetConnected = true,
+        onRetry = {},
+        topBar = {
+            DevTopAppBarWithLogo("Settings")
+        },
+        floating = {}
     ) {
-        DevLabel(text = "Settings")
+
     }
 }

@@ -1,5 +1,6 @@
 package com.abaferas.devassist.ui.screen.books.newbooks
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,9 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
@@ -72,12 +78,20 @@ fun ScreenBookContent(
         ){
             items(state.items, key = {item -> item.isbn13}){
                 Card(
-                    modifier = Modifier.height(180.dp),
+                    modifier = Modifier.height(200.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.Red
                     )
                 ) {
-                    DevLabel(text = "${it.title} + ${it.price}")
+                    Image(
+                        painter = rememberAsyncImagePainter(model = "",
+                            placeholder = painterResource(id = R.drawable.app_icon)
+                        ),
+                        modifier = Modifier,
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center,
+                        contentDescription = "",
+                    )
                 }
             }
         }

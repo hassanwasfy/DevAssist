@@ -1,18 +1,16 @@
 package com.abaferas.devassist.ui.screen.profile
 
 import androidx.lifecycle.SavedStateHandle
-import com.abaferas.devassist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import com.abaferas.devassist.ui.base.BaseViewModel
+
 
 @HiltViewModel
-class ScreenProfileViewModel @Inject constructor(
+class ScreenJobViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     /*TODO Add you use cases*/
-) : BaseViewModel<ProfileUiState, ProfileScreenUiEffect>(ProfileUiState()),
-    ProfileScreenInteraction {
-
-    private val args: ProfileScreenArgs = ProfileScreenArgs(savedStateHandle = savedStateHandle)
+) : BaseViewModel<JobUiState, JobScreenUiEffect>(JobUiState()), JobScreenInteraction {
 
     init {
         getData()

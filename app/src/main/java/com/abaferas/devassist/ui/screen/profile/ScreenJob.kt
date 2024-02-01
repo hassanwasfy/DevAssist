@@ -1,4 +1,4 @@
-package com.abaferas.devassist.ui.screen.ai
+package com.abaferas.devassist.ui.screen.profile
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -13,14 +13,14 @@ import com.abaferas.devassist.ui.navigation.NavigationHandler
 
 
 @Composable
-fun ScreenAiChat(
-    screenAiChatViewModel: ScreenAiChatViewModel = hiltViewModel()
+fun ScreenJob(
+    screenJobViewModel: ScreenJobViewModel = hiltViewModel()
 ) {
-    val state by screenAiChatViewModel.state.collectAsStateWithLifecycle()
-    ScreenAiChatContent(state = state, interaction = screenAiChatViewModel)
-    NavigationHandler(effects = screenAiChatViewModel.effect) { effect, controller ->
+    val state by screenJobViewModel.state.collectAsStateWithLifecycle()
+    ScreenJobContent(state = state, interaction = screenJobViewModel)
+    NavigationHandler(effects = screenJobViewModel.effect) { effect, controller ->
         when (effect) {
-            is AiChatScreenUiEffect.NavigateUp -> {
+            is JobScreenUiEffect.NavigateUp -> {
                 controller.popBackStack()
             }
         }
@@ -29,9 +29,9 @@ fun ScreenAiChat(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenAiChatContent(
-    state: AiChatUiState,
-    interaction: AiChatScreenInteraction
+fun ScreenJobContent(
+    state: JobUiState,
+    interaction: JobScreenInteraction
 ) {
     DevScaffold(
         isLoading = state.isLoading,
@@ -40,7 +40,7 @@ fun ScreenAiChatContent(
         isInternetConnected = true,
         onRetry = {},
         topBar = {
-            DevTopAppBarWithLogo("Ai Chat")
+            DevTopAppBarWithLogo("Job Finder")
         },
         floating = {}
     ) {

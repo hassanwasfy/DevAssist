@@ -292,28 +292,32 @@ class ScreenNewItemNewModel @Inject constructor(
                 onError = ::onError,
                 onSuccess = ::onSuccess,
                 execute = {
-                    iState.update {
-                        it.copy(
-                            isLoading = true
+                    try {
+                        iState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                        val value = iState.value
+                        val progress =
+                            (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
+                        saveNewItemUseCase(
+                            LearningItem(
+                                itemId = Random.nextLong().toString(),
+                                userId = repository.getUserId(),
+                                name = value.name.value,
+                                type = value.type,
+                                author = value.author.value,
+                                startDate = value.startDate.value,
+                                endDate = value.endDate.value,
+                                totalAmount = value.totalAmount.value.toInt(),
+                                finishedAmount = value.finishedAmount.value.toInt(),
+                                progress = progress,
+                            )
                         )
+                    }catch (e: java.lang.NumberFormatException){
+                        throw e
                     }
-                    val value = iState.value
-                    val progress =
-                        (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
-                    saveNewItemUseCase(
-                        LearningItem(
-                            itemId = Random.nextLong().toString(),
-                            userId = repository.getUserId(),
-                            name = value.name.value,
-                            type = value.type,
-                            author = value.author.value,
-                            startDate = value.startDate.value,
-                            endDate = value.endDate.value,
-                            totalAmount = value.totalAmount.value.toInt(),
-                            finishedAmount = value.finishedAmount.value.toInt(),
-                            progress = progress,
-                        )
-                    )
                 }
             )
         } else {

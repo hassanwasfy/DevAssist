@@ -9,7 +9,7 @@ sealed class NavigationDestination(val route: String) {
     data object ScreenSignUp : NavigationDestination("ScreenSignUp")
     data object ScreenSettings : NavigationDestination("ScreenSettings")
     data object ScreenAiChat : NavigationDestination("ScreenAiChat")
-    data object ScreenProfile : NavigationDestination("ScreenProfile")
+    data object ScreenJob : NavigationDestination("ScreenJob")
     data object ScreenBook : NavigationDestination("ScreenBook")
     data object ScreenSelectType : NavigationDestination("ScreenSelectType")
     data object ScreenBookDetails : NavigationDestination("ScreenBookDetails")
