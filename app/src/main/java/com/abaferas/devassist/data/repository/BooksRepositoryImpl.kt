@@ -1,25 +1,25 @@
 package com.abaferas.devassist.data.repository
 
-import com.abaferas.devassist.data.model.books.BookDetailsDto
-import com.abaferas.devassist.data.model.books.BookSearchDto
-import com.abaferas.devassist.data.model.books.NewBookDto
+import com.abaferas.devassist.data.mappers.toDomain
 import com.abaferas.devassist.data.service.BooksService
-import com.abaferas.devassist.data.utils.wrapRequest
 import com.abaferas.devassist.data.utils.wrapResponse
+import com.abaferas.devassist.domain.models.BookDetails
+import com.abaferas.devassist.domain.models.BookSearch
+import com.abaferas.devassist.domain.models.NewBook
 import javax.inject.Inject
 
 class BooksRepositoryImpl @Inject constructor(
     private val booksService: BooksService
 ) : BooksRepository {
-    override suspend fun getNewBooks(): NewBookDto {
-        return wrapResponse { booksService.getNewBooks() }
+    override suspend fun getNewBooks(): NewBook {
+        return wrapResponse { booksService.getNewBooks() }.toDomain()
     }
 
-    override suspend fun searchBooksByQuery(query: String): BookSearchDto {
-        return wrapResponse { booksService.searchBooksByQuery(query) }
+    override suspend fun searchBooksByQuery(query: String): BookSearch {
+        return wrapResponse { booksService.searchBooksByQuery(query) }.toDomain()
     }
 
-    override suspend fun getBookDetailsByIsbn(id: String): BookDetailsDto {
-        return wrapResponse { booksService.getBookDetailsByIsbn(id) }
+    override suspend fun getBookDetailsByIsbn(id: String): BookDetails {
+        return wrapResponse { booksService.getBookDetailsByIsbn(id) }.toDomain()
     }
 }

@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abaferas.devassist.R
+import com.abaferas.devassist.ui.composable.DevFormattedLabel
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLabelWithIcon
 import com.abaferas.devassist.ui.composable.DevLottie
@@ -253,15 +254,3 @@ fun ScreenHomeContent(
     }
 }
 
-@Composable
-fun DevFormattedLabel(value: Float) {
-    val formattedPercentage = remember(value) {
-        AnnotatedString.Builder().apply {
-            append("${(value * 100).toInt()}%")
-        }.toAnnotatedString()
-    }
-
-    DevLabel(text = formattedPercentage.text, modifier = Modifier.padding(top = 16.dp), fontSize = 20,
-        fontWeight = FontWeight.ExtraBold,
-        color = color_darkPrimaryColor)
-}

@@ -1,4 +1,4 @@
-package com.abaferas.devassist.ui.screen.books
+package com.abaferas.devassist.ui.screen.books.newbooks
 
 import androidx.lifecycle.SavedStateHandle
 
