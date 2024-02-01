@@ -2,8 +2,13 @@ package com.abaferas.devassist.ui.composable
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
@@ -23,6 +28,7 @@ import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_primaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
+import com.abaferas.devassist.ui.utils.Constants
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +58,15 @@ fun DevScaffold(
         bottomBar = bottomBar,
         floatingActionButton = floating,
     ) { _ ->
-        AnimatedVisibility(visible = isLoading) {
+        AnimatedVisibility(
+            visible = isLoading,
+            enter = fadeIn(
+                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
+            ),
+            exit = fadeOut(
+                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
+            )
+        ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -61,7 +75,15 @@ fun DevScaffold(
                 loading()
             }
         }
-        AnimatedVisibility(visible = isError) {
+        AnimatedVisibility(
+            visible = isError,
+            enter = fadeIn(
+                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
+            ),
+            exit = fadeOut(
+                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
+            )
+        ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -72,17 +94,11 @@ fun DevScaffold(
         }
         AnimatedVisibility(
             visible = !isError && !isLoading,
-            enter = slideInHorizontally(
-                spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
+            enter = fadeIn(
+                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
             ),
-            exit = slideOutHorizontally(
-                spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
+            exit = fadeOut(
+                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
             )
         ) {
             content()
