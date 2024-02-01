@@ -78,14 +78,16 @@ class ScreenEditItemViewModel @Inject constructor(
                 it.copy(
                     name = EntryTextValue(
                         value = value,
-                        error = ErrorUiState(true, "can't be less 4")
-                    )
+                        error = ErrorUiState(true, "can't be less 4"),
+                    ),
+                    edits = it.edits + 1
                 )
             }
         } else {
             iState.update {
                 it.copy(
-                    name = EntryTextValue(value = value)
+                    name = EntryTextValue(value = value),
+                    edits = it.edits + 1
                 )
             }
         }
@@ -98,13 +100,15 @@ class ScreenEditItemViewModel @Inject constructor(
                     author = EntryTextValue(
                         value = value,
                         error = ErrorUiState(true, "can't be less 4")
-                    )
+                    ),
+                    edits = it.edits + 1
                 )
             }
         } else {
             iState.update {
                 it.copy(
-                    author = EntryTextValue(value = value)
+                    author = EntryTextValue(value = value),
+                    edits = it.edits + 1
                 )
             }
         }
@@ -117,7 +121,8 @@ class ScreenEditItemViewModel @Inject constructor(
             val newValue = DateFormatter.convert(value.toLong())
             iState.update {
                 it.copy(
-                    startDate = EntryTextValue(value = newValue)
+                    startDate = EntryTextValue(value = newValue),
+                    edits = it.edits + 1
                 )
             }
             onDismiss()
@@ -131,7 +136,8 @@ class ScreenEditItemViewModel @Inject constructor(
                     endDate = EntryTextValue(
                         value = "",
                         error = ErrorUiState(true, "select start date first!")
-                    )
+                    ),
+                    edits = it.edits + 1
                 )
             }
             onDismiss()
@@ -150,7 +156,8 @@ class ScreenEditItemViewModel @Inject constructor(
                         startDate = EntryTextValue(
                             value = currentStart,
                             error = ErrorUiState(true, "can't be empty!")
-                        )
+                        ),
+                        edits = it.edits + 1
                     )
                 }
             } else if (endDate < startDate) {
@@ -159,13 +166,15 @@ class ScreenEditItemViewModel @Inject constructor(
                         endDate = EntryTextValue(
                             value = newValue,
                             error = ErrorUiState(true, "can't be before start day!")
-                        )
+                        ),
+                        edits = it.edits + 1
                     )
                 }
             } else {
                 iState.update {
                     it.copy(
-                        endDate = EntryTextValue(value = newValue)
+                        endDate = EntryTextValue(value = newValue),
+                        edits = it.edits + 1
                     )
                 }
             }
@@ -185,13 +194,15 @@ class ScreenEditItemViewModel @Inject constructor(
                     totalAmount = EntryTextValue(
                         value = if (amount != 0) "$amount" else "",
                         error = ErrorUiState(true, "can't be less than 1")
-                    )
+                    ),
+                    edits = it.edits + 1
                 )
             }
         } else {
             iState.update {
                 it.copy(
-                    totalAmount = EntryTextValue(value = "$amount")
+                    totalAmount = EntryTextValue(value = "$amount"),
+                    edits = it.edits + 1
                 )
             }
         }
@@ -221,19 +232,29 @@ class ScreenEditItemViewModel @Inject constructor(
                                 "can't be more than $total"
                             }
                         )
-                    )
+                    ),
+                    edits = it.edits + 1
                 )
             }
         } else {
             iState.update {
                 it.copy(
-                    finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else "")
+                    finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else ""),
+                    edits = it.edits + 1
                 )
             }
         }
     }
 
     override fun onClickEdit() {
+        val value = iState.value
+        val progress =
+            (value.finishedAmount.value.toFloat() * 1F) / value.totalAmount.value.toFloat()
+        iState.update {
+            it.copy(
+                progress = EntryTextValue("$progress")
+            )
+        }
         tryToExecute(
             onError = { msg ->
                 iState.update {
@@ -308,30 +329,15 @@ class ScreenEditItemViewModel @Inject constructor(
 
     override fun isValidated(): Boolean {
         val data = iState.value
-        return validateErrors(data) && validateInputs(data)
-    }
-
-    private fun validateErrors(data: EditItemUiState): Boolean {
         return !data.error.isError &&
-                !data.name.error.isError &&
-                !data.author.error.isError &&
-                !data.totalAmount.error.isError &&
-                !data.finishedAmount.error.isError &&
-                !data.startDate.error.isError &&
-                !data.endDate.error.isError
-    }
+                !data.name.error.isError && data.name.value != "" &&
+                !data.author.error.isError && data.author.value != "" &&
+                !data.totalAmount.error.isError && data.totalAmount.value != "" &&
+                !data.finishedAmount.error.isError && data.finishedAmount.value != "" &&
+                !data.startDate.error.isError && data.startDate.value != "" &&
+                !data.endDate.error.isError && data.endDate.value != "" &&
+                data.edits > 0
 
-    private fun validateInputs(data: EditItemUiState): Boolean {
-        val start = DateFormatter.convert(data.startDate.value)
-        val end = DateFormatter.convert(data.endDate.value)
-        return data.name.value.isNotEmpty() &&
-                data.author.value.isNotEmpty() &&
-                data.totalAmount.value.isNotEmpty() &&
-                data.finishedAmount.value.isNotEmpty() &&
-                data.startDate.value.isNotEmpty() &&
-                data.endDate.value.isNotEmpty() &&
-                data.finishedAmount.value <= data.totalAmount.value &&
-                start <= end
     }
 
     override fun onRetry() {

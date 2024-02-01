@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface LearningItemsRepository {
     suspend fun saveNewLearningItem(learningItem: LearningItem): Task<DocumentReference?>
-    suspend fun editLearningItem(learningItem: LearningItem): Task<Void?>
-    suspend fun deleteLearningItem(learningItem: LearningItem): Task<Void?>
+    suspend fun editLearningItem(learningItem: LearningItem): Task<QuerySnapshot?>
+    suspend fun deleteLearningItem(learningItem: LearningItem): Task<QuerySnapshot?>
     suspend fun getAllLearningItems(userId: String): Flow<List<LearningItem>>
     suspend fun getItemById(itemId: String): LearningItem
 }

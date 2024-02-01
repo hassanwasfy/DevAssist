@@ -11,6 +11,7 @@ import com.abaferas.devassist.ui.base.ErrorUiState
 
 data class EditItemUiState(
     val isLoading: Boolean = true,
+    val edits: Int = 0,
     val error: ErrorUiState = ErrorUiState(),
     val isBook: Boolean = true,
     val itemId: String = "",

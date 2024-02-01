@@ -7,8 +7,10 @@ import com.abaferas.devassist.data.model.learning.LearningItemDTO
 import com.abaferas.devassist.data.utils.wrapRequest
 import com.abaferas.devassist.domain.models.LearningItem
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +20,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class LearningItemsRepositoryImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
 ) : LearningItemsRepository {
     override suspend fun saveNewLearningItem(learningItem: LearningItem): Task<DocumentReference?> {
         val item = learningItem.toDtoModel()
@@ -27,19 +29,25 @@ class LearningItemsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun editLearningItem(learningItem: LearningItem): Task<Void?> {
+    override suspend fun editLearningItem(learningItem: LearningItem): Task<QuerySnapshot?> {
         val item = learningItem.toDtoModel()
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS).document(item.name ?: "")
-                .set(item)
+            firestore.collection(Constants.collectionLEARNINGITEMS).get().addOnSuccessListener {
+                it.documents.find { curr ->
+                    curr.toObject(LearningItemDTO::class.java)?.itemId == item.itemId
+                }?.reference?.set(item)
+            }
         }
     }
 
-    override suspend fun deleteLearningItem(learningItem: LearningItem): Task<Void?> {
+    override suspend fun deleteLearningItem(learningItem: LearningItem): Task<QuerySnapshot?> {
         val item = learningItem.toDtoModel()
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS).document(item.name ?: "")
-                .delete()
+            firestore.collection(Constants.collectionLEARNINGITEMS).get().addOnSuccessListener {
+                it.documents.find { curr ->
+                    curr.toObject(LearningItemDTO::class.java)?.itemId == item.itemId
+                }?.reference?.delete()
+            }
         }
     }
 
