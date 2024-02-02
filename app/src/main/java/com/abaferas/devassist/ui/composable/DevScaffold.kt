@@ -61,17 +61,6 @@ fun DevScaffold(
         bottomBar = bottomBar,
         floatingActionButton = floating,
     ) { _ ->
-        AnimatedVisibility(
-            visible = isLoading,
-            enter = fadeIn(
-                tween(Constants.ANIMATION_DURATION, easing = EaseIn)
-            ),
-            exit = fadeOut(
-                tween(Constants.ANIMATION_DURATION, easing = EaseOut)
-            )
-        ) {
-
-        }
         DevAnimatedVisibility(
             visible = isLoading,
         ) {
@@ -83,7 +72,7 @@ fun DevScaffold(
                 loading()
             }
         }
-        DevAnimatedVisibility(visible = !isError) {
+        DevAnimatedVisibility(visible = isError && !isLoading) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
