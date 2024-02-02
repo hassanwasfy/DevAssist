@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.composable.DevLabel
+import com.abaferas.devassist.ui.composable.DevLottie
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
 import com.abaferas.devassist.ui.navigation.NavigationHandler
@@ -66,31 +69,33 @@ fun ScreenBookContent(
         floating = {}
     ) {
         LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
+            columns = StaggeredGridCells.Fixed(3),
             state = rememberLazyStaggeredGridState(),
             verticalItemSpacing = 8.dp,
             modifier = Modifier
                 .fillMaxSize()
                 .background(color_lightPrimaryColor)
                 .padding(top = 56.dp, bottom = 72.dp),
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            items(state.items, key = {item -> item.isbn13}){
+        ) {
+            items(state.items, key = { item -> item.isbn13 }) {
                 Card(
-                    modifier = Modifier.height(200.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Red
-                    )
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .height(150.dp)
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = "",
-                            placeholder = painterResource(id = R.drawable.app_icon)
+                        painter = rememberAsyncImagePainter(
+                            model = it.image,
+                            placeholder = painterResource(id = R.drawable.app_icon),
+                            onLoading = {
+
+                            }
                         ),
-                        modifier = Modifier,
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center,
+                        contentScale = ContentScale.FillBounds,
                         contentDescription = "",
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }

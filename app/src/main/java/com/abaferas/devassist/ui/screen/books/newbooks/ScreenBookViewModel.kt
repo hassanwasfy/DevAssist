@@ -2,7 +2,9 @@ package com.abaferas.devassist.ui.screen.books.newbooks
 
 import androidx.lifecycle.SavedStateHandle
 import com.abaferas.devassist.domain.models.Book
+import com.abaferas.devassist.domain.usecase.books.GetNewBooksUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
+import com.abaferas.devassist.ui.base.ErrorUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScreenBookViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
+    private val getNewBooksUseCase: GetNewBooksUseCase
 ) : BaseViewModel<BookUiState, BookScreenUiEffect>(BookUiState()), BookScreenInteraction {
 
     private val args: BookScreenArgs = BookScreenArgs(savedStateHandle = savedStateHandle)
@@ -21,58 +24,25 @@ class ScreenBookViewModel @Inject constructor(
 
     override fun getData() {
         tryToExecute(
-            onError = {},
-            onSuccess = {},
-            execute = {
-                delay(3000)
+            onError = { errMsg ->
                 iState.update {
                     it.copy(
                         isLoading = false,
-                        isInternetConnected = true,
-                        items = listOf(
-                            Book(
-                                title = "TitleBook",
-                                subtitle = "this is subtitle",
-                                isbn13 = "121216782",
-                                price = "4453246",
-                                image = "sds",
-                                url = "sds",
-                            ),
-                            Book(
-                                title = "TitleBook",
-                                subtitle = "this is subtitle",
-                                isbn13 = "12123412",
-                                price = "4453246",
-                                image = "sds",
-                                url = "sds",
-                            ),
-                            Book(
-                                title = "TitleBook",
-                                subtitle = "this is subtitle",
-                                isbn13 = "121212",
-                                price = "4453246",
-                                image = "sds",
-                                url = "sds",
-                            ),
-                            Book(
-                                title = "TitleBook",
-                                subtitle = "this is subtitle",
-                                isbn13 = "1212412",
-                                price = "4453246",
-                                image = "sds",
-                                url = "sds",
-                            ),
-                            Book(
-                                title = "TitleBook",
-                                subtitle = "this is subtitle",
-                                isbn13 = "1212612",
-                                price = "4453246",
-                                image = "sds",
-                                url = "sds",
-                            ),
-                        )
+                        error = ErrorUiState(true, errMsg)
                     )
                 }
+            },
+            onSuccess = { books ->
+                iState.update {
+                    it.copy(
+                        isLoading = false,
+                        items = books,
+                        error = ErrorUiState()
+                    )
+                }
+            },
+            execute = {
+                getNewBooksUseCase()
             }
         )
     }
