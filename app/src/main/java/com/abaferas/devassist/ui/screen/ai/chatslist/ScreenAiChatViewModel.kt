@@ -1,7 +1,9 @@
 package com.abaferas.devassist.ui.screen.ai.chatslist
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.abaferas.devassist.ui.base.BaseViewModel
+import com.google.ai.client.generativeai.GenerativeModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,7 +24,7 @@ class ScreenAiChatViewModel @Inject constructor(
     }
 
     override fun onClickBack() {
-
+        sendUiEffect(AiChatScreenUiEffect.NavigateUp)
     }
 
     override fun onError(errorMsg: String) {
@@ -30,6 +32,6 @@ class ScreenAiChatViewModel @Inject constructor(
     }
 
     override fun addNewChat() {
-
+        sendUiEffect(AiChatScreenUiEffect.NewChat)
     }
 }

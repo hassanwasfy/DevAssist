@@ -165,3 +165,77 @@ fun DevTextFieldClickLeading(
         visualTransformation = visualTransformation
     )
 }
+
+@Composable
+fun DevTextFieldClickTrailing(
+    modifier: Modifier = Modifier,
+    value: String,
+    isError: Boolean,
+    errorText: String,
+    maxLines: Int = 1,
+    singleLine: Boolean = true,
+    placeholder: String,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    leadingIcon: ImageVector? = null,
+    leadingTint: Color = color_textColor,
+    trailingIcon: ImageVector? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedIndicatorColor = color_darkPrimaryColor,
+        unfocusedContainerColor = color_lightPrimaryColor
+    ),
+    onClickIcon: () -> Unit = {},
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        modifier = modifier,
+        onValueChange = onValueChange,
+        enabled = enabled,
+        readOnly = readOnly,
+        supportingText = {
+            AnimatedVisibility(
+                visible = isError
+            ) {
+                DevLabel(
+                    text = errorText,
+                    fontSize = 12,
+                    color = Color.Red
+                )
+            }
+        },
+        leadingIcon = {
+            leadingIcon?.let {
+                Icon(
+                    tint = leadingTint,
+                    imageVector = it,
+                    contentDescription = "",
+                )
+            }
+        },
+        trailingIcon = {
+            trailingIcon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = "",
+                    modifier = Modifier.clickable { onClickIcon() })
+            }
+        },
+        placeholder = {
+            DevLabel(
+                modifier = Modifier,
+                text = placeholder,
+                fontSize = 16,
+            )
+        },
+        isError = isError,
+        shape = roundCornerShape(corner = 16),
+        colors = colors,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = visualTransformation
+    )
+}

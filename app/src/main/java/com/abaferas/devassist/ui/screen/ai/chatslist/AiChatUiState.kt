@@ -6,5 +6,5 @@ import com.abaferas.devassist.ui.base.ErrorUiState
 
 data class AiChatUiState(
     val isLoading: Boolean = true,
-    val error: ErrorUiState = ErrorUiState()
+    val error: ErrorUiState = ErrorUiState(),
 ) : BaseUiState

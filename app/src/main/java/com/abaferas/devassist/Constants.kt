@@ -7,6 +7,6 @@ object Constants{
     const val collectionUSERS = "users"
     const val collectionLEARNINGITEMS = "learningItems"
     const val collectionChats = "chats"
-    const val TOP_BAR_HEIGHT = 56
-    const val BOTTOM_BAR_HEIGHT = 72
+    const val TOP_BAR_HEIGHT = 64
+    const val BOTTOM_BAR_HEIGHT = 80
 }
