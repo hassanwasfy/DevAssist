@@ -1,9 +1,7 @@
 package com.abaferas.devassist.ui.screen.item.edititem
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.abaferas.devassist.domain.models.LearningItem
-import com.abaferas.devassist.domain.models.LearningType
 import com.abaferas.devassist.domain.usecase.items.DeleteItemUseCase
 import com.abaferas.devassist.domain.usecase.items.EditItemUseCase
 import com.abaferas.devassist.domain.usecase.items.GetItemByIdUseCase
@@ -11,7 +9,7 @@ import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
 import com.abaferas.devassist.ui.mappers.toDomain
-import com.abaferas.devassist.ui.utils.Constants
+import com.abaferas.devassist.Constants
 import com.abaferas.devassist.ui.utils.DateFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -185,15 +183,15 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onAmountChange(value: String) {
         try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-                value.toFloat()
+                value.toInt()
             } else {
-                0F
+                0
             }
-            if (amount < 1F) {
+            if (amount < 1) {
                 iState.update {
                     it.copy(
                         totalAmount = EntryTextValue(
-                            value = if (amount != 0F) "$amount" else "",
+                            value = if (amount != 0) "$amount" else "",
                             error = ErrorUiState(true, "can't be less than 1")
                         ),
                         edits = it.edits + 1
@@ -222,23 +220,23 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onFinishedChange(value: String) {
         try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-                value.toFloat()
+                value.toInt()
             } else {
-                0F
+                0
             }
             val currTotal = iState.value.totalAmount.value
             val total = if (currTotal.isNotEmpty() && currTotal.isNotBlank()) {
-                currTotal.toFloat()
+                currTotal.toInt()
             } else {
-                0F
+                0
             }
             if (amount > total) {
                 iState.update {
                     it.copy(
                         finishedAmount = EntryTextValue(
-                            value = if (amount != 0F) "$amount" else "",
+                            value = if (amount != 0) "$amount" else "",
                             error = ErrorUiState(
-                                true, if (total == 0F) {
+                                true, if (total == 0) {
                                     "total amount is missing! or incorrect!"
                                 } else {
                                     "can't be more than $total"
@@ -251,7 +249,7 @@ class ScreenEditItemViewModel @Inject constructor(
             } else {
                 iState.update {
                     it.copy(
-                        finishedAmount = EntryTextValue(value = if (amount != 0F) "$amount" else ""),
+                        finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else ""),
                         edits = it.edits + 1
                     )
                 }
@@ -271,7 +269,7 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onClickEdit() {
         val value = iState.value
         val progress =
-            (value.finishedAmount.value.toFloat() * 1F) / value.totalAmount.value.toFloat()
+            (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toInt()
         iState.update {
             it.copy(
                 progress = EntryTextValue("$progress")

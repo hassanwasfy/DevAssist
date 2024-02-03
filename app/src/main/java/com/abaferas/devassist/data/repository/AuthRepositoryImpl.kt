@@ -1,8 +1,8 @@
 package com.abaferas.devassist.data.repository
 
-import com.abaferas.devassist.data.Constants
 import com.abaferas.devassist.data.utils.wrapRequest
 import com.abaferas.devassist.domain.models.User
+import com.abaferas.devassist.Constants
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth

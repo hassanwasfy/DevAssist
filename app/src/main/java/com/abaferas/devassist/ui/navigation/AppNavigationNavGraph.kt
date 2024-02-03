@@ -19,7 +19,7 @@ import com.abaferas.devassist.ui.screen.item.selecttype.addSelectTypeRoute
 import com.abaferas.devassist.ui.screen.profile.addJobRoute
 import com.abaferas.devassist.ui.screen.settings.addSettingsRoute
 import com.abaferas.devassist.ui.screen.splash.addSplashRoute
-import com.abaferas.devassist.ui.utils.Constants
+import com.abaferas.devassist.Constants
 
 @Composable
 fun AppNavigationNavGraph() {

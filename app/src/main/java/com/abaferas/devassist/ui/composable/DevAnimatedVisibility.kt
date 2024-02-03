@@ -10,7 +10,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.abaferas.devassist.ui.utils.Constants
+import com.abaferas.devassist.Constants
 
 @Composable
 fun DevAnimatedVisibility(

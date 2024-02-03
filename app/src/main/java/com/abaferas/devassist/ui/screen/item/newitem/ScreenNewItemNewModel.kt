@@ -14,9 +14,8 @@ import com.abaferas.devassist.domain.usecase.items.SaveNewItemUseCase
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.EntryTextValue
 import com.abaferas.devassist.ui.base.ErrorUiState
-import com.abaferas.devassist.ui.screen.item.edititem.EditItemUiState
 import com.abaferas.devassist.ui.screen.item.newitem.NewItemScreenArgs.Companion.TYPE_NAME
-import com.abaferas.devassist.ui.utils.Constants
+import com.abaferas.devassist.Constants
 import com.abaferas.devassist.ui.utils.DateFormatter
 import com.abaferas.devassist.ui.utils.NetworkStateManager
 import com.google.android.gms.tasks.Task
@@ -207,15 +206,15 @@ class ScreenNewItemNewModel @Inject constructor(
     override fun onAmountChange(value: String) {
         try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-                value.toFloat()
+                value.toInt()
             } else {
-                0F
+                0
             }
-            if (amount < 1F) {
+            if (amount < 1) {
                 iState.update {
                     it.copy(
                         totalAmount = EntryTextValue(
-                            value = if (amount != 0F) "$amount" else "",
+                            value = if (amount != 0) "$amount" else "",
                             error = ErrorUiState(true, "can't be less than 1")
                         )
                     )
@@ -242,23 +241,23 @@ class ScreenNewItemNewModel @Inject constructor(
     override fun onFinishedChange(value: String) {
         try {
             val amount = if (value.isNotEmpty() && value.isNotBlank()) {
-                value.toFloat()
+                value.toInt()
             } else {
-                0F
+                0
             }
             val currTotal = iState.value.totalAmount.value
             val total = if (currTotal.isNotEmpty() && currTotal.isNotBlank()) {
-                currTotal.toFloat()
+                currTotal.toInt()
             } else {
-                0F
+                0
             }
             if (amount > total) {
                 iState.update {
                     it.copy(
                         finishedAmount = EntryTextValue(
-                            value = if (amount != 0F) "$amount" else "",
+                            value = if (amount != 0) "$amount" else "",
                             error = ErrorUiState(
-                                true, if (total == 0F) {
+                                true, if (total == 0) {
                                     "total amount is missing! or incorrect!"
                                 } else {
                                     "can't be more than $total"
@@ -270,7 +269,7 @@ class ScreenNewItemNewModel @Inject constructor(
             } else {
                 iState.update {
                     it.copy(
-                        finishedAmount = EntryTextValue(value = if (amount != 0F) "$amount" else "")
+                        finishedAmount = EntryTextValue(value = if (amount != 0) "$amount" else "")
                     )
                 }
             }
@@ -300,7 +299,7 @@ class ScreenNewItemNewModel @Inject constructor(
                         }
                         val value = iState.value
                         val progress =
-                            (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toFloat()
+                            (value.finishedAmount.value.toInt() * 1F) / value.totalAmount.value.toInt()
                         saveNewItemUseCase(
                             LearningItem(
                                 itemId = Random.nextLong().toString(),

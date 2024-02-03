@@ -1,4 +1,4 @@
-package com.abaferas.devassist
+package com.abaferas.devassist.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

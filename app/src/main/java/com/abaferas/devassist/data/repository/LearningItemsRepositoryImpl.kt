@@ -1,13 +1,12 @@
 package com.abaferas.devassist.data.repository
 
-import com.abaferas.devassist.data.Constants
+import com.abaferas.devassist.Constants
 import com.abaferas.devassist.data.mappers.toDomainModel
 import com.abaferas.devassist.data.mappers.toDtoModel
 import com.abaferas.devassist.data.model.learning.LearningItemDTO
 import com.abaferas.devassist.data.utils.wrapRequest
 import com.abaferas.devassist.domain.models.LearningItem
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
