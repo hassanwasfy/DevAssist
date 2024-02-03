@@ -4,8 +4,9 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Home
@@ -18,6 +19,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.navigation.LocalNavController
 import com.abaferas.devassist.ui.navigation.NavigationDestination
-import com.abaferas.devassist.ui.screen.ai.navigateToAiChat
+import com.abaferas.devassist.ui.screen.ai.chatslist.navigateToAiChat
 import com.abaferas.devassist.ui.screen.books.newbooks.navigateToBook
 import com.abaferas.devassist.ui.screen.home.navigateToHome
 import com.abaferas.devassist.ui.screen.profile.navigateToJob
@@ -44,13 +46,20 @@ import com.abaferas.devassist.ui.theme.color_primaryColor
 fun DevBottomBar() {
     val controller = LocalNavController.current
     val currentScreen = currentRoute(navController = controller)
-    if (currentScreen != NavigationDestination.ScreenSplash.route &&
-        currentScreen != NavigationDestination.ScreenLogin.route &&
-        currentScreen != NavigationDestination.ScreenSignUp.route
-    ) {
+
+    val excludedScreens =
+        currentScreen != NavigationDestination.ScreenSplash.route &&
+                currentScreen != NavigationDestination.ScreenLogin.route &&
+                currentScreen != NavigationDestination.ScreenSignUp.route &&
+                currentScreen != NavigationDestination.ScreenAiOneChat.route
+
+    if (excludedScreens){
         BottomAppBar(
             containerColor = color_darkPrimaryColor,
             tonalElevation = 12.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
         ) {
             AddDevBottomItem(
                 icon = Icons.Outlined.Badge, label = R.string.bottom_job,

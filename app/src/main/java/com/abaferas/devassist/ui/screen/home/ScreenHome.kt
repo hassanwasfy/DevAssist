@@ -44,12 +44,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abaferas.devassist.R
+import com.abaferas.devassist.ui.composable.DevAnimatedVisibility
 import com.abaferas.devassist.ui.composable.DevFormattedLabel
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLabelWithIcon
 import com.abaferas.devassist.ui.composable.DevLottie
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
+import com.abaferas.devassist.ui.composable.modifier.mainContainerPadding
 import com.abaferas.devassist.ui.composable.modifier.roundCorner
 import com.abaferas.devassist.ui.composable.modifier.roundCornerShape
 import com.abaferas.devassist.ui.navigation.NavigationHandler
@@ -103,7 +105,7 @@ fun ScreenHomeContent(
             DevTopAppBarWithLogo("Home")
         },
         floating = {
-            AnimatedVisibility(visible = !state.error.isError) {
+            DevAnimatedVisibility(visible = !state.error.isError) {
                 FloatingActionButton(
                     modifier = Modifier.padding(bottom = 72.dp),
                     onClick = interaction::onClickAddNewItem,
@@ -119,12 +121,12 @@ fun ScreenHomeContent(
             }
         }
     ) {
-        AnimatedVisibility(visible = state.items.isNotEmpty()) {
+        DevAnimatedVisibility(visible = state.items.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color_lightPrimaryColor)
-                    .padding(top = 72.dp, bottom = 56.dp),
+                    .mainContainerPadding(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -228,7 +230,7 @@ fun ScreenHomeContent(
                 }
             }
         }
-        AnimatedVisibility(visible = state.items.isEmpty()) {
+        DevAnimatedVisibility(visible = state.items.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()

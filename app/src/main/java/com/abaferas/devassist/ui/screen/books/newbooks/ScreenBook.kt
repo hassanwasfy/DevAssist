@@ -32,6 +32,7 @@ import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLottie
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
+import com.abaferas.devassist.ui.composable.modifier.mainContainerPadding
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 
@@ -75,7 +76,7 @@ fun ScreenBookContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color_lightPrimaryColor)
-                .padding(top = 56.dp, bottom = 72.dp),
+                .mainContainerPadding(),
             contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {

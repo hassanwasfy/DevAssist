@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
+import com.abaferas.devassist.ui.composable.modifier.mainContainerPadding
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.screen.item.newitem.navigateToNewItem
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
@@ -78,7 +79,7 @@ fun ScreenSelectTypeContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = color_lightPrimaryColor)
-                .padding(top = 64.dp),
+                .mainContainerPadding(),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
 

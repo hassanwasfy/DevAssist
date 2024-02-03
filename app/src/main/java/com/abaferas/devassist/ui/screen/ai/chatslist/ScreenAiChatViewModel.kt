@@ -1,4 +1,4 @@
-package com.abaferas.devassist.ui.screen.ai
+package com.abaferas.devassist.ui.screen.ai.chatslist
 
 import androidx.lifecycle.SavedStateHandle
 import com.abaferas.devassist.ui.base.BaseViewModel
@@ -26,6 +26,10 @@ class ScreenAiChatViewModel @Inject constructor(
     }
 
     override fun onError(errorMsg: String) {
+
+    }
+
+    override fun addNewChat() {
 
     }
 }

@@ -1,4 +1,4 @@
-package com.abaferas.devassist.ui.screen.ai
+package com.abaferas.devassist.ui.screen.ai.chatslist
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

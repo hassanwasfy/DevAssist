@@ -1,4 +1,4 @@
-package com.abaferas.devassist.ui.screen.ai
+package com.abaferas.devassist.ui.screen.ai.chatslist
 
 import com.abaferas.devassist.ui.base.BaseUiState
 import com.abaferas.devassist.ui.base.ErrorUiState

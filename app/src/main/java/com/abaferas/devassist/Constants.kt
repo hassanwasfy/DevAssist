@@ -6,4 +6,7 @@ object Constants{
     const val MODEL_NAME = "gemini-pro"
     const val collectionUSERS = "users"
     const val collectionLEARNINGITEMS = "learningItems"
+    const val collectionChats = "chats"
+    const val TOP_BAR_HEIGHT = 56
+    const val BOTTOM_BAR_HEIGHT = 72
 }

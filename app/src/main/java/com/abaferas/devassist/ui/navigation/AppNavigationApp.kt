@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.abaferas.devassist.R
 import com.abaferas.devassist.ui.composable.DevBottomBar
 import com.abaferas.devassist.ui.composable.DevLabel
+import com.abaferas.devassist.ui.composable.currentRoute
 import com.abaferas.devassist.ui.screen.home.navigateToHome
 import com.abaferas.devassist.ui.screen.settings.navigateToSettings
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
@@ -49,15 +50,7 @@ fun AppNavigationApp() {
     CompositionLocalProvider(LocalNavController provides navController) {
         Scaffold(
             modifier = Modifier.background(color_lightPrimaryColor),
-            bottomBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-                ) {
-                    DevBottomBar()
-                }
-            }
+            bottomBar = { DevBottomBar() }
         ) {
             val sys = rememberSystemUiController()
             sys.setStatusBarColor(color_darkPrimaryColor)

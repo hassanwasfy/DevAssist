@@ -47,6 +47,7 @@ import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTextField
 import com.abaferas.devassist.ui.composable.DevTextFieldClickLeading
 import com.abaferas.devassist.ui.composable.DevTopAppBarWithLogo
+import com.abaferas.devassist.ui.composable.modifier.mainContainerPadding
 import com.abaferas.devassist.ui.navigation.NavigationHandler
 import com.abaferas.devassist.ui.screen.home.navigateToHome
 import com.abaferas.devassist.ui.theme.color_AccentColor
@@ -99,7 +100,7 @@ fun ScreenNewItemContent(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 64.dp)
+                .mainContainerPadding()
                 .background(
                     color_lightPrimaryColor
                 ),
