@@ -61,6 +61,7 @@ import com.abaferas.devassist.ui.composable.DevAnimatedVisibility
 import com.abaferas.devassist.ui.composable.DevCardIcon
 import com.abaferas.devassist.ui.composable.DevLabel
 import com.abaferas.devassist.ui.composable.DevLottie
+import com.abaferas.devassist.ui.composable.DevLottieSimple
 import com.abaferas.devassist.ui.composable.DevScaffold
 import com.abaferas.devassist.ui.composable.DevTextField
 import com.abaferas.devassist.ui.composable.DevTextFieldClickTrailing
@@ -159,7 +160,8 @@ fun ScreenAiOneChatContent(
                 }
             }
             DevAnimatedVisibility(visible = state.isResponsing) {
-                DevLottie(id = R.raw.chat_loading)
+                DevLottieSimple(id = R.raw.chat_loading,
+                    modifier = Modifier.height(16.dp))
             }
             DevTextFieldClickTrailing(
                 modifier = Modifier

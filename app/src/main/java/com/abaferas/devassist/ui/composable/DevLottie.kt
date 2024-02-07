@@ -28,3 +28,21 @@ fun DevLottie(
         alignment = Alignment.Center
     )
 }
+
+@Composable
+fun DevLottieSimple(
+    modifier: Modifier = Modifier,
+    @RawRes id: Int){
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(id))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = Int.MAX_VALUE
+    )
+    LottieAnimation(
+        modifier = modifier,
+        composition = composition,
+        progress = { progress },
+        alignment = Alignment.Center
+    )
+}
+
