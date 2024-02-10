@@ -2,8 +2,8 @@ package com.abaferas.devassist.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.abaferas.devassist.Constants
 import com.abaferas.devassist.ui.utils.DevAssistException
-import com.abaferas.devassist.ui.utils.NetworkStateManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
@@ -13,11 +13,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import javax.inject.Inject
 
-
-abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState):ViewModel() {
-
+abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState) : ViewModel() {
     protected val iState = MutableStateFlow(state)
     val state = iState.asStateFlow()
 
@@ -35,15 +32,15 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEffect>(state: UiState):Vi
     ) {
         viewModelScope.launch(dispatcher) {
             try {
-                withTimeout(5000){
+                withTimeout(Constants.CONNECTION_TIME_OUT) {
                     val result = execute()
                     onSuccess(result)
                 }
-            }catch (e: DevAssistException.NoInternetConnection){
+            } catch (e: DevAssistException.NoInternetConnection) {
                 onError(e.message.toString())
-            }catch (e: TimeoutCancellationException){
+            } catch (e: TimeoutCancellationException) {
                 onError(e.message.toString())
-            }catch (e: NoSuchElementException){
+            } catch (e: NoSuchElementException) {
                 onError(e.message.toString())
             }
         }

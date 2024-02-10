@@ -11,6 +11,7 @@ import com.abaferas.devassist.ui.base.ErrorUiState
 import com.abaferas.devassist.ui.mappers.toDomain
 import com.abaferas.devassist.Constants
 import com.abaferas.devassist.ui.utils.DateFormatter
+import com.abaferas.devassist.ui.utils.NetworkStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -21,10 +22,10 @@ class ScreenEditItemViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getItemByIdUseCase: GetItemByIdUseCase,
     private val deleteItemUseCase: DeleteItemUseCase,
-    private val editItemUseCase: EditItemUseCase
+    private val editItemUseCase: EditItemUseCase,
+    private val networkStateManager: NetworkStateManager
 ) : BaseViewModel<EditItemUiState, EditItemScreenUiEffect>(EditItemUiState()),
     EditItemScreenInteraction {
-
     init {
         getData()
     }
@@ -35,7 +36,7 @@ class ScreenEditItemViewModel @Inject constructor(
             onSuccess = ::onSuccess,
             execute = {
                 getItemByIdUseCase(savedStateHandle[EditItemScreenArgs.ITEM_ID] ?: "")
-            }
+            },
         )
     }
 
@@ -161,18 +162,19 @@ class ScreenEditItemViewModel @Inject constructor(
             } else if (endDate < startDate) {
                 iState.update {
                     it.copy(
-                        endDate = EntryTextValue(
-                            value = newValue,
-                            error = ErrorUiState(true, "can't be before start day!")
+                        endDate =
+                            EntryTextValue(
+                                value = newValue,
+                                error = ErrorUiState(true, "can't be before start day!"),
                         ),
-                        edits = it.edits + 1
+                        edits = it.edits + 1,
                     )
                 }
             } else {
                 iState.update {
                     it.copy(
                         endDate = EntryTextValue(value = newValue),
-                        edits = it.edits + 1
+                        edits = it.edits + 1,
                     )
                 }
             }
@@ -280,7 +282,7 @@ class ScreenEditItemViewModel @Inject constructor(
                 iState.update {
                     it.copy(
                         isLoading = false,
-                        error = ErrorUiState(true, msg)
+                        error = ErrorUiState(true, msg),
                     )
                 }
             },
@@ -294,14 +296,14 @@ class ScreenEditItemViewModel @Inject constructor(
             execute = {
                 val item = iState.value
                 editItemUseCase(item.toDomain())
-            }
+            },
         )
     }
 
     override fun onClickDelete() {
         iState.update {
             it.copy(
-                isDeletingItem = true
+                isDeletingItem = true,
             )
         }
     }
@@ -310,7 +312,7 @@ class ScreenEditItemViewModel @Inject constructor(
         iState.update {
             it.copy(
                 selectingStartDate = false,
-                selectingEndDate = false
+                selectingEndDate = false,
             )
         }
     }
@@ -318,7 +320,7 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onOpenStartDialog() {
         iState.update {
             it.copy(
-                selectingStartDate = true
+                selectingStartDate = true,
             )
         }
     }
@@ -326,7 +328,7 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onOpenEndDialog() {
         iState.update {
             it.copy(
-                selectingEndDate = true
+                selectingEndDate = true,
             )
         }
     }
@@ -334,46 +336,49 @@ class ScreenEditItemViewModel @Inject constructor(
     override fun onDeleteDialogDismiss() {
         iState.update {
             it.copy(
-                isDeletingItem = false
+                isDeletingItem = false,
             )
         }
     }
 
     override fun onPerformDelete() {
-        tryToExecute(
-            onError = { msg ->
-                iState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = ErrorUiState(true, msg)
-                    )
-                }
-            },
-            onSuccess = {
-                it.addOnSuccessListener {
-                    sendUiEffect(EditItemScreenUiEffect.Home)
-                }.addOnFailureListener { e ->
-                    onError(e.message.toString())
-                }
-            },
-            execute = {
-                val item = iState.value
-                deleteItemUseCase(item.toDomain())
-            }
-        )
+        if (networkStateManager.isInternetAvailable()){
+            tryToExecute(
+                onError = { msg ->
+                    iState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = ErrorUiState(true, msg),
+                        )
+                    }
+                },
+                onSuccess = {
+                    it.addOnSuccessListener {
+                        sendUiEffect(EditItemScreenUiEffect.Home)
+                    }.addOnFailureListener { e ->
+                        onError(e.message.toString())
+                    }
+                },
+                execute = {
+                    val item = iState.value
+                    deleteItemUseCase(item.toDomain())
+                },
+            )
+        } else {
+            onError("No Internet Connection!")
+        }
     }
 
     override fun isValidated(): Boolean {
         val data = iState.value
         return !data.error.isError &&
-                !data.name.error.isError && data.name.value != "" &&
-                !data.author.error.isError && data.author.value != "" &&
-                !data.totalAmount.error.isError && data.totalAmount.value != "" &&
-                !data.finishedAmount.error.isError && data.finishedAmount.value != "" &&
-                !data.startDate.error.isError && data.startDate.value != "" &&
-                !data.endDate.error.isError && data.endDate.value != "" &&
-                data.edits > 0
-
+            !data.name.error.isError && data.name.value != "" &&
+            !data.author.error.isError && data.author.value != "" &&
+            !data.totalAmount.error.isError && data.totalAmount.value != "" &&
+            !data.finishedAmount.error.isError && data.finishedAmount.value != "" &&
+            !data.startDate.error.isError && data.startDate.value != "" &&
+            !data.endDate.error.isError && data.endDate.value != "" &&
+            data.edits > 0
     }
 
     override fun onRetry() {

@@ -314,7 +314,7 @@ class ScreenNewItemNewModel @Inject constructor(
                                 progress = progress,
                             )
                         )
-                    }catch (e: java.lang.NumberFormatException){
+                    }catch (e: java.lang.NumberFormatException) {
                         throw e
                     }
                 }

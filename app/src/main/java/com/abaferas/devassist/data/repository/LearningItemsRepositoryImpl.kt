@@ -24,14 +24,14 @@ class LearningItemsRepositoryImpl @Inject constructor(
     override suspend fun saveNewLearningItem(learningItem: LearningItem): Task<DocumentReference?> {
         val item = learningItem.toDtoModel()
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS).add(item)
+            firestore.collection(Constants.COLLECTION_LEARNING_ITEMS).add(item)
         }
     }
 
     override suspend fun editLearningItem(learningItem: LearningItem): Task<QuerySnapshot?> {
         val item = learningItem.toDtoModel()
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS).get().addOnSuccessListener {
+            firestore.collection(Constants.COLLECTION_LEARNING_ITEMS).get().addOnSuccessListener {
                 it.documents.find { curr ->
                     curr.toObject(LearningItemDTO::class.java)?.itemId == item.itemId
                 }?.reference?.set(item)
@@ -42,7 +42,7 @@ class LearningItemsRepositoryImpl @Inject constructor(
     override suspend fun deleteLearningItem(learningItem: LearningItem): Task<QuerySnapshot?> {
         val item = learningItem.toDtoModel()
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS).get().addOnSuccessListener {
+            firestore.collection(Constants.COLLECTION_LEARNING_ITEMS).get().addOnSuccessListener {
                 it.documents.find { curr ->
                     curr.toObject(LearningItemDTO::class.java)?.itemId == item.itemId
                 }?.reference?.delete()
@@ -52,7 +52,7 @@ class LearningItemsRepositoryImpl @Inject constructor(
 
     override suspend fun getItemById(itemId: String): LearningItem {
         return wrapRequest {
-            firestore.collection(Constants.collectionLEARNINGITEMS)
+            firestore.collection(Constants.COLLECTION_LEARNING_ITEMS)
                 .whereEqualTo("itemId", itemId)
                 .get()
         }.await().toObjects(LearningItemDTO::class.java).find {
@@ -62,7 +62,7 @@ class LearningItemsRepositoryImpl @Inject constructor(
 
     override suspend fun getAllLearningItems(userId: String): Flow<List<LearningItem>> =
         callbackFlow {
-            val registration = firestore.collection(Constants.collectionLEARNINGITEMS)
+            val registration = firestore.collection(Constants.COLLECTION_LEARNING_ITEMS)
                 .whereEqualTo("userId", userId)
                 .addSnapshotListener { querySnapshot, error ->
                     if (error != null) {

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
@@ -50,6 +51,7 @@ import com.abaferas.devassist.ui.screen.home.navigateToHome
 import com.abaferas.devassist.ui.theme.color_darkPrimaryColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_primaryColor
+import com.abaferas.devassist.ui.theme.color_red_alert
 import com.abaferas.devassist.ui.theme.color_textColor
 import com.abaferas.devassist.ui.theme.color_textPrimaryColor
 
@@ -99,12 +101,12 @@ fun ScreenEditItemContent(
     ) {
         LazyColumn(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .mainContainerPadding()
-                    .background(
-                        color_lightPrimaryColor,
-                    ),
+            Modifier
+                .fillMaxSize()
+                .mainContainerPadding()
+                .background(
+                    color_lightPrimaryColor,
+                ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
@@ -248,9 +250,8 @@ fun ScreenEditItemContent(
                 modifier =
                     Modifier
                         .background(color_primaryColor, roundCornerShape(16))
-                        .fillMaxWidth(0.9f)
-                        .height(180.dp)
-                        .padding(vertical = 8.dp, horizontal = 16.dp),
+                        .wrapContentHeight(unbounded = true)
+                        .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
                 onDismissRequest = interaction::onDeleteDialogDismiss,
             ) {
                 Column(
@@ -258,20 +259,19 @@ fun ScreenEditItemContent(
                     verticalArrangement = Arrangement.Center,
                 ) {
                     DevLabel(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                         text = "Delete ${state.name.value}",
                         color = color_lightPrimaryColor,
                         textAlign = TextAlign.Center,
                         fontSize = 22,
                     )
                     DevLabel(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
                         text = "Are you sure?",
                         color = color_lightPrimaryColor,
                         textAlign = TextAlign.Center,
                         fontSize = 18,
                     )
-                    Spacer(modifier = Modifier.weight(0.6f))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
@@ -279,10 +279,20 @@ fun ScreenEditItemContent(
                         DevButton(
                             text = "Cancel",
                             modifier = Modifier.padding(end = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = color_primaryColor,
+                                contentColor = color_darkPrimaryColor
+                            ),
                         ) {
                             interaction.onDeleteDialogDismiss()
                         }
-                        DevButton(text = "Delete") {
+                        DevButton(
+                            text = "Delete",
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = color_red_alert,
+                                contentColor = color_lightPrimaryColor
+                            ),
+                        ) {
                             interaction.onPerformDelete()
                         }
                     }

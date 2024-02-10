@@ -38,7 +38,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertNewUser(user: User): Task<DocumentReference?> {
-        return wrapRequest { firestore.collection(Constants.collectionUSERS).add(user) }
+        return wrapRequest { firestore.collection(Constants.COLLECTION_USERS).add(user) }
     }
 
     override suspend fun getUserId(): String {
