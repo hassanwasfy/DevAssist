@@ -299,27 +299,11 @@ class ScreenEditItemViewModel @Inject constructor(
     }
 
     override fun onClickDelete() {
-        tryToExecute(
-            onError = { msg ->
-                iState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = ErrorUiState(true, msg)
-                    )
-                }
-            },
-            onSuccess = {
-                it.addOnSuccessListener {
-                    sendUiEffect(EditItemScreenUiEffect.Home)
-                }.addOnFailureListener { e ->
-                    onError(e.message.toString())
-                }
-            },
-            execute = {
-                val item = iState.value
-                deleteItemUseCase(item.toDomain())
-            }
-        )
+        iState.update {
+            it.copy(
+                isDeletingItem = true
+            )
+        }
     }
 
     override fun onDismiss() {
@@ -345,6 +329,38 @@ class ScreenEditItemViewModel @Inject constructor(
                 selectingEndDate = true
             )
         }
+    }
+
+    override fun onDeleteDialogDismiss() {
+        iState.update {
+            it.copy(
+                isDeletingItem = false
+            )
+        }
+    }
+
+    override fun onPerformDelete() {
+        tryToExecute(
+            onError = { msg ->
+                iState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = ErrorUiState(true, msg)
+                    )
+                }
+            },
+            onSuccess = {
+                it.addOnSuccessListener {
+                    sendUiEffect(EditItemScreenUiEffect.Home)
+                }.addOnFailureListener { e ->
+                    onError(e.message.toString())
+                }
+            },
+            execute = {
+                val item = iState.value
+                deleteItemUseCase(item.toDomain())
+            }
+        )
     }
 
     override fun isValidated(): Boolean {

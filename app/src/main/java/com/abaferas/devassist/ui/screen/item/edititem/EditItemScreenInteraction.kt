@@ -15,4 +15,7 @@ interface EditItemScreenInteraction {
     fun onOpenEndDialog()
     fun isValidated(): Boolean
     fun onRetry()
+    fun onDeleteDialogDismiss()
+    fun onPerformDelete()
+
 }

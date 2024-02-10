@@ -1,6 +1,5 @@
 package com.abaferas.devassist.ui.screen.item.edititem
 
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddReaction
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -11,6 +10,7 @@ import com.abaferas.devassist.ui.base.ErrorUiState
 
 data class EditItemUiState(
     val isLoading: Boolean = true,
+    val isDeletingItem: Boolean = false,
     val edits: Int = 0,
     val error: ErrorUiState = ErrorUiState(),
     val isBook: Boolean = true,
