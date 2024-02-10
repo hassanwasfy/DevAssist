@@ -1,5 +1,7 @@
 package com.abaferas.devassist.di
 
+import com.abaferas.devassist.data.repository.AiRepository
+import com.abaferas.devassist.data.repository.AiRepositoryImpl
 import com.abaferas.devassist.data.repository.AuthRepository
 import com.abaferas.devassist.data.repository.AuthRepositoryImpl
 import com.abaferas.devassist.data.repository.BooksRepository
@@ -19,14 +21,26 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun provideAuthRepository(iAuthRepositoryImpl: AuthRepositoryImpl): AuthRepository
+    abstract fun provideAuthRepository(
+        iAuthRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository
 
     @Singleton
     @Binds
-    abstract fun provideItemsRepository(learningItemsRepositoryImpl: LearningItemsRepositoryImpl): LearningItemsRepository
+    abstract fun provideItemsRepository(
+        learningItemsRepositoryImpl: LearningItemsRepositoryImpl
+    ): LearningItemsRepository
 
     @Singleton
     @Binds
-    abstract fun provideBooksRepository(booksRepositoryImpl: BooksRepositoryImpl): BooksRepository
+    abstract fun provideBooksRepository(
+        booksRepositoryImpl: BooksRepositoryImpl
+    ): BooksRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideAiRepository(
+        aiRepositoryImpl: AiRepositoryImpl
+    ): AiRepository
 
 }

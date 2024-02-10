@@ -135,6 +135,11 @@ dependencies {
 
     implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
 
+    implementation("io.socket:socket.io-client:2.0.0") {
+        exclude(group = "org.json", module = "json")
+    }
+
+
 }
 
 kapt {

@@ -10,3 +10,7 @@ object Constants{
     const val TOP_BAR_HEIGHT = 64
     const val BOTTOM_BAR_HEIGHT = 80
 }
+
+enum class Role(val role: String){
+    USER("user"),MODEL("model")
+}
