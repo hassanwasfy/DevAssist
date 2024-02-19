@@ -4,17 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.abaferas.devassist.Role
 import com.abaferas.devassist.data.repository.AiRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import com.abaferas.devassist.ui.base.BaseViewModel
 import com.abaferas.devassist.ui.base.ErrorUiState
-import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.content
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @HiltViewModel
@@ -53,42 +51,64 @@ class ScreenAiOneChatViewModel @Inject constructor(
         }
     }
 
+    override fun onRetry() {
+        iState.update {
+            it.copy(
+                error = ErrorUiState()
+            )
+        }
+    }
+
+    @OptIn(FlowPreview::class)
     override fun onClickSend() {
-        viewModelScope.launch {
-            val msg = iState.value.msgValue
-            val updated = state.value.msgList
-            updated.add(
+        viewModelScope.launch(Dispatchers.IO) {
+            val msg = state.value.msgValue
+            val listUpdate = state.value.msgList
+            listUpdate.add(
                 AiOneChatUiState.ChatMessage(
-                    Role.USER, msg, 0L
+                    Role.USER,msg,System.currentTimeMillis()
                 )
             )
-            iState.update {
-                it.copy(
+            iState.update { item ->
+                item.copy(
+                    msgList = listUpdate,
                     msgValue = "",
                     isResponsing = true
                 )
             }
-
-            aiRepository.sendMessage(msg).catch {
-                iState.update { state ->
-                    state.copy(
-                        error = ErrorUiState(true, it.message.toString())
-                    )
+            aiRepository.sendMessage(msg)
+                .catch {
+                    iState.update { item ->
+                        item.copy(
+                            error = ErrorUiState(
+                                isError = true,
+                                message = it.message.toString()
+                            )
+                        )
+                    }
                 }
-            }.collect {
-                state.value.msgList.add(
-                    AiOneChatUiState.ChatMessage(
-                        Role.MODEL, it.text ?: "", 0L
+                .collect() {
+                    iState.update { item ->
+                        item.copy(
+                            isResponsing = true
+                        )
+                    }
+                    val response = it.text.toString()
+                    val list = state.value.msgList
+                    val added = list.add(
+                        AiOneChatUiState.ChatMessage(
+                            Role.MODEL,response,System.currentTimeMillis()
+                        )
                     )
-                )
-                iState.update { state ->
-                    state.copy(
-                        error = ErrorUiState(),
-                        msgList = updated,
-                        isResponsing = false
-                    )
+                    if (added){
+                        iState.update { item ->
+                            item.copy(
+                                msgList = list,
+                                isResponsing = false
+                            )
+                        }
+                    }
                 }
-            }
         }
     }
 }

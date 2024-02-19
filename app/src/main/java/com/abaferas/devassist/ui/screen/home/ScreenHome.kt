@@ -1,7 +1,6 @@
 package com.abaferas.devassist.ui.screen.home
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -29,7 +28,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -37,8 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,7 +59,6 @@ import com.abaferas.devassist.ui.theme.color_dividerColor
 import com.abaferas.devassist.ui.theme.color_lightPrimaryColor
 import com.abaferas.devassist.ui.theme.color_textColor
 import com.abaferas.devassist.ui.theme.color_textSecondaryColor
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -83,7 +78,7 @@ fun ScreenHome(
             }
 
             is HomeScreenUiEffect.EditCurrentItem -> {
-                Log.w("XCV","in home handler: ${effect.itemId}")
+                Log.w("XCV", "in home handler: ${effect.itemId}")
                 controller.navigateToEditItem(effect.itemId)
             }
         }
@@ -127,11 +122,11 @@ fun ScreenHomeContent(
                     .fillMaxSize()
                     .background(color_lightPrimaryColor)
                     .mainContainerPadding(),
-                contentPadding = PaddingValues(horizontal = 16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(state.items) {
-                    Log.w("XCV","in home list: ${it.itemId}")
+                    Log.w("XCV", "in home list: ${it.itemId}")
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = Color.Transparent
@@ -202,9 +197,9 @@ fun ScreenHomeContent(
 
                                 ) {
                                     val progress = remember {
-                                       Animatable(0f)
+                                        Animatable(0f)
                                     }
-                                    LaunchedEffect(key1 = it.progress){
+                                    LaunchedEffect(key1 = it.progress) {
                                         progress.animateTo(
                                             targetValue = it.progress,
                                             animationSpec = spring(

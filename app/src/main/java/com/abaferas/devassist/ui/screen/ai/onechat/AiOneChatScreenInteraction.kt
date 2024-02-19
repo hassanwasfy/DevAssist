@@ -4,4 +4,5 @@ interface AiOneChatScreenInteraction {
     fun onClickBack()
     fun onTypeMessage(msg: String)
     fun onClickSend()
+    fun onRetry()
 }

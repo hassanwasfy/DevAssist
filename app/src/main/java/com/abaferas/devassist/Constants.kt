@@ -9,6 +9,7 @@ object Constants{
     const val COLLECTION_CHATS = "chats"
     const val TOP_BAR_HEIGHT = 64
     const val BOTTOM_BAR_HEIGHT = 80
+    const val BOTTOM_NO_PADDING = 72
     const val CONNECTION_TIME_OUT = 5000L
 }
 
